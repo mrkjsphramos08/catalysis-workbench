@@ -1,0 +1,22 @@
+{
+  "figure_name": "fig_char20_aas_replicate_distribution",
+  "timestamp_utc": "2026-10-13T12:53:35.051644+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\faas_calibration_fe.csv",
+      "filename": "faas_calibration_fe.csv",
+      "sha256": "2f4a8ee8a0088bea7029f00dd756b630337318c80faa4981e71852ea6bd2ef12",
+      "size_bytes": 1486
+    }
+  ],
+  "technique": "FAAS-Precision",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "levels": [
+      "Std 0.5 mg/L",
+      "Std 1.0 mg/L",
+      "Std 2.0 mg/L",
+      "Std 5.0 mg/L"
+    ]
+  }
+}

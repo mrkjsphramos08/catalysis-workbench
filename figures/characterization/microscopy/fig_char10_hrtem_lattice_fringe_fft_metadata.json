@@ -1,0 +1,17 @@
+{
+  "figure_name": "fig_char10_hrtem_lattice_fringe_fft",
+  "timestamp_utc": "2026-10-13T12:52:58.353680+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\microscopy\\hrtem_lattice_crop.png",
+      "filename": "hrtem_lattice_crop.png",
+      "sha256": "d6027cd392f70af21deeedbf4b0d3e7c8b05e65e5c8b5aeee501dfb8276c8d4a",
+      "size_bytes": 53702
+    }
+  ],
+  "technique": "HRTEM",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "d_spacing_angstrom": 1.9799999999999998
+  }
+}

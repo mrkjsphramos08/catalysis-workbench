@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char6_raman_deconvolution_id_ig",
+  "timestamp_utc": "2026-10-13T12:52:44.269139+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\raman\\carbon_support_raman.csv",
+      "filename": "carbon_support_raman.csv",
+      "sha256": "054533854fbc59e88b9d4f10ba6ab572e53e63ac36fa47b59974566f0866fbde",
+      "size_bytes": 16739
+    }
+  ],
+  "technique": "Raman",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "id_ig_height": 0.6780281570544523,
+    "ad_ag_area": 0.7937971820324288
+  }
+}

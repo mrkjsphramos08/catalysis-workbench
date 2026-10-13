@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig4_catalysis_reaction_profile",
+  "timestamp_utc": "2026-10-13T10:48:56.702737+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\catalysis_reaction_profile_synthetic.csv",
+      "filename": "catalysis_reaction_profile_synthetic.csv",
+      "sha256": "f6d365bfa8cdb7e92551a3be82ca2f50cc4ab04bd8bd517c8d52b4e5e7d16b7a",
+      "size_bytes": 229
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_reaction_pathway"
+  }
+}

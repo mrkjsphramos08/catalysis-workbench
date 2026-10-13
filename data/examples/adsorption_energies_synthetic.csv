@@ -1,0 +1,16 @@
+surface,site,e_clean_surface,e_adsorbate_ref,e_total,e_ads,error,unit,reference_species,sign_convention
+Pt(111),fcc,-842.15,-14.28,-858.25,-1.82,0.037,eV,CO(g),negative_favorable
+Pt(111),bridge,-842.15,-14.28,-858.18,-1.75,0.049,eV,CO(g),negative_favorable
+Pt(111),top,-842.15,-14.28,-858.01,-1.58,0.045,eV,CO(g),negative_favorable
+Pd(111),fcc,-720.5,-14.28,-736.73,-1.95,0.042,eV,CO(g),negative_favorable
+Pd(111),bridge,-720.5,-14.28,-736.66,-1.88,0.033,eV,CO(g),negative_favorable
+Pd(111),top,-720.5,-14.28,-736.23,-1.45,0.033,eV,CO(g),negative_favorable
+Cu(111),fcc,-610.2,-14.28,-625.4,-0.92,0.031,eV,CO(g),negative_favorable
+Cu(111),bridge,-610.2,-14.28,-625.33,-0.85,0.047,eV,CO(g),negative_favorable
+Cu(111),top,-610.2,-14.28,-625.22,-0.74,0.042,eV,CO(g),negative_favorable
+Ni(111),fcc,-795.3,-14.28,-811.63,-2.05,0.044,eV,CO(g),negative_favorable
+Ni(111),bridge,-795.3,-14.28,-811.56,-1.98,0.03,eV,CO(g),negative_favorable
+Ni(111),top,-795.3,-14.28,-811.26,-1.68,0.049,eV,CO(g),negative_favorable
+Au(111),fcc,-530.8,-14.28,-545.4,-0.32,0.047,eV,CO(g),negative_favorable
+Au(111),bridge,-530.8,-14.28,-545.36,-0.28,0.034,eV,CO(g),negative_favorable
+Au(111),top,-530.8,-14.28,-545.5,-0.42,0.034,eV,CO(g),negative_favorable

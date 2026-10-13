@@ -1,0 +1,66 @@
+Program PWSCF v.7.2
+    
+     Parallel version (MPI & OpenMP), running on       4 processor cores
+     
+     bravais-lattice index     =            2
+     lattice parameter (alat)  =      10.2600  a.u.
+     unit-cell volume          =     269.9676 (a.u.)^3
+     number of atoms/cell      =            2
+     number of atomic types    =            1
+     number of electrons       =         8.00
+     number of Kohn-Sham states=            8
+     kinetic-energy cutoff     =      40.0000  Ry
+     charge-density cutoff     =     160.0000  Ry
+     convergence threshold     =      1.0E-08
+     Beta                      =       0.7000
+     Exchange-correlation      = PBE ( 1  4  3  4 0 0)
+     
+     celldm(1)=  10.260000  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+     
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (  -0.500000   0.000000   0.500000 )  
+               a(2) = (   0.000000   0.500000   0.500000 )  
+               a(3) = (  -0.500000   0.500000   0.000000 )  
+
+     site n.     atom                  positions (alat units)
+         1           Si  tau(   1) = (   0.0000000   0.0000000   0.0000000  )
+         2           Si  tau(   2) = (   0.2500000   0.2500000   0.2500000  )
+
+     iteration #  1     ecut=    40.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  1.00E-02,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is        0.5 secs
+
+     total energy              =     -15.82341050 Ry
+     Harris-Foulkes estimate   =     -15.85012300 Ry
+     estimated scf accuracy    <       0.04120000 Ry
+
+     iteration #  6     ecut=    40.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  2.15E-08,  avg # of iterations =  1.0
+
+     End of self-consistent calculation
+
+          highest occupied level is   6.2541 eV
+
+!    total energy              =     -15.84523190 Ry
+     Harris-Foulkes estimate   =     -15.84523190 Ry
+     estimated scf accuracy    <          1.2E-09 Ry
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =   0.00000000   0.00000000   0.00000000
+     atom    2 type  1   force =   0.00000000   0.00000000   0.00000000
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+
+     total   stress  (Ry/bohr**3)                   (kbar)     P=   -1.25
+       -0.00000850   0.00000000   0.00000000         -1.25        0.00        0.00
+        0.00000000  -0.00000850   0.00000000          0.00       -1.25        0.00
+        0.00000000   0.00000000  -0.00000850          0.00        0.00       -1.25
+
+     convergence has been achieved for threshold:  1.0000E-08 Ry
+
+     JOB DONE.

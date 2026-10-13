@@ -1,0 +1,24 @@
+{
+  "figure_name": "fig_char19_aas_stability_before_after",
+  "timestamp_utc": "2026-10-13T12:53:32.769047+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\catalyst_stability_leaching.csv",
+      "filename": "catalyst_stability_leaching.csv",
+      "sha256": "c94c85853f0844f3a1e1b5d7dbb481325de5b8a41bafcc60890c328104a4bb13",
+      "size_bytes": 720
+    }
+  ],
+  "technique": "AAS-Retention",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "before": [
+      14.8,
+      5.1
+    ],
+    "after": [
+      14.1488,
+      4.0494
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "figure_name": "fig_char9_microscopy_particle_size_distribution",
+  "timestamp_utc": "2026-10-13T12:52:54.275931+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\microscopy\\sem_nanoparticles.png",
+      "filename": "sem_nanoparticles.png",
+      "sha256": "02aa9081f75ea4fdb02a84b2742bb522678b1577c40119361c2f4da0f706f7c1",
+      "size_bytes": 206145
+    }
+  ],
+  "technique": "Microscopy",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "d50_nm": 9.58283247182005
+  }
+}

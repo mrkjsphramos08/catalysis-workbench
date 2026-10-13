@@ -1,0 +1,26 @@
+{
+  "figure_name": "fig_char7_raman_stacked_comparison",
+  "timestamp_utc": "2026-10-13T12:52:47.324181+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\raman\\carbon_support_raman.csv",
+      "filename": "carbon_support_raman.csv",
+      "sha256": "054533854fbc59e88b9d4f10ba6ab572e53e63ac36fa47b59974566f0866fbde",
+      "size_bytes": 16739
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\raman\\tmd_catalyst_raman.csv",
+      "filename": "tmd_catalyst_raman.csv",
+      "sha256": "e9f783fb7e962e5bca98adfbb505363dc530334aec4e7d1ed762ff5f2014ea0f",
+      "size_bytes": 10478
+    }
+  ],
+  "technique": "Raman",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "samples": [
+      "Carbon",
+      "MoS2"
+    ]
+  }
+}

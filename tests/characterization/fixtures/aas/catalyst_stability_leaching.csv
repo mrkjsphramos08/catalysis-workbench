@@ -1,0 +1,11 @@
+Time_hours,Sample_ID,Element,Electrolyte_Volume_mL,Aliquot_Withdrawn_mL,Measured_Conc_mg_L,Dilution_Factor,Initial_Catalyst_Mass_mg,Initial_Metal_wt_pct,Technique
+0,Electrolyte_0h,Pt,50.0,0.0,0.002,1.0,2.0,14.8,GFAAS
+0,Electrolyte_0h,Co,50.0,0.0,0.003,1.0,2.0,5.1,FAAS
+10,Electrolyte_10h,Pt,50.0,2.0,0.015,1.0,2.0,14.8,GFAAS
+10,Electrolyte_10h,Co,50.0,2.0,0.045,1.0,2.0,5.1,FAAS
+25,Electrolyte_25h,Pt,50.0,2.0,0.038,1.0,2.0,14.8,GFAAS
+25,Electrolyte_25h,Co,50.0,2.0,0.11,1.0,2.0,5.1,FAAS
+50,Electrolyte_50h,Pt,50.0,2.0,0.075,1.0,2.0,14.8,GFAAS
+50,Electrolyte_50h,Co,50.0,2.0,0.23,1.0,2.0,5.1,FAAS
+100,Electrolyte_100h,Pt,50.0,2.0,0.13,1.0,2.0,14.8,GFAAS
+100,Electrolyte_100h,Co,50.0,2.0,0.42,1.0,2.0,5.1,FAAS

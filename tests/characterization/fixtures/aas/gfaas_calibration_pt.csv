@@ -1,0 +1,13 @@
+Sample_ID,Sample_Type,Element,Wavelength_nm,Replicate,Concentration_Standard,Integrated_Absorbance,Concentration_Reported,Unit,Dilution_Factor,Technique,Background_Correction
+BLANK_GFAAS,Blank,Pt,265.9,1,0.0,0.0009,0.0,ug/L,1.0,GFAAS,Zeeman
+BLANK_GFAAS,Blank,Pt,265.9,2,0.0,0.0012,0.0,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_5ppb,Standard,Pt,265.9,1,5.0,0.0117,4.46,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_5ppb,Standard,Pt,265.9,2,5.0,0.0125,4.79,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_10ppb,Standard,Pt,265.9,1,10.0,0.025,10.04,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_10ppb,Standard,Pt,265.9,2,10.0,0.0239,9.56,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_25ppb,Standard,Pt,265.9,1,25.0,0.0609,25.14,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_25ppb,Standard,Pt,265.9,2,25.0,0.0601,24.77,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_50ppb,Standard,Pt,265.9,1,50.0,0.1198,49.89,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_50ppb,Standard,Pt,265.9,2,50.0,0.1196,49.77,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_100ppb,Standard,Pt,265.9,1,100.0,0.2408,100.7,ug/L,1.0,GFAAS,Zeeman
+STD_Pt_100ppb,Standard,Pt,265.9,2,100.0,0.2391,99.99,ug/L,1.0,GFAAS,Zeeman

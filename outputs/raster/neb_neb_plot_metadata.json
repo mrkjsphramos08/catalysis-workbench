@@ -1,0 +1,23 @@
+{
+  "figure_name": "neb_neb_plot",
+  "timestamp_utc": "2026-10-13T04:57:51.607507+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\neb.dat",
+      "filename": "neb.dat",
+      "sha256": "1104052c84d401f93299c058e3e79844a5bd7739cd520fcfa821527290797c11",
+      "size_bytes": 214
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "type": "neb.x",
+    "forward_barrier_ev": 0.85,
+    "reverse_barrier_ev": 1.5
+  }
+}

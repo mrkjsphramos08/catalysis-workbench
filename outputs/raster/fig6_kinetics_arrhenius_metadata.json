@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig6_kinetics_arrhenius",
+  "timestamp_utc": "2026-10-13T10:49:02.908569+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\kinetics_arrhenius_synthetic.csv",
+      "filename": "kinetics_arrhenius_synthetic.csv",
+      "sha256": "a1955e553024ac5a2ef39df29065d3a901edddb585076ce4695c53ebb489a6bc",
+      "size_bytes": 374
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_arrhenius"
+  }
+}

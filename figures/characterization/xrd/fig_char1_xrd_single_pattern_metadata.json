@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char1_xrd_single_pattern",
+  "timestamp_utc": "2026-10-13T12:52:26.101537+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\xrd\\catalyst_pristine_xrd.csv",
+      "filename": "catalyst_pristine_xrd.csv",
+      "sha256": "5a33737e449762a8ad93dc63138b2ae7dea1464f51b304a96363d24b6d27b48c",
+      "size_bytes": 21430
+    }
+  ],
+  "technique": "XRD",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "sample": "Pt/C Pristine",
+    "radiation": "Cu_Ka"
+  }
+}

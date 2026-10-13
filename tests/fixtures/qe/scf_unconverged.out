@@ -1,0 +1,6 @@
+Program PWSCF v.7.2
+     calculation = 'scf'
+     iteration # 100     ecut=    40.00 Ry
+     convergence NOT achieved!
+!    total energy              =     -15.12345678 Ry
+     JOB DONE.

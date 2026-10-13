@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char16_aas_standard_addition_matrix",
+  "timestamp_utc": "2026-10-13T12:53:24.669755+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\aas_standard_addition_catalyst.csv",
+      "filename": "aas_standard_addition_catalyst.csv",
+      "sha256": "88cb932b66d2a35a68323d99507252eae0087afd4f67afe1bc6132d11a0da9c0",
+      "size_bytes": 1313
+    }
+  ],
+  "technique": "AAS-MOSA",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "apparent_conc": 0.8407947994603211,
+    "original_conc": 4.203973997301605
+  }
+}

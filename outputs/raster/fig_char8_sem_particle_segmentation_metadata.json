@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char8_sem_particle_segmentation",
+  "timestamp_utc": "2026-10-13T12:52:51.571538+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\microscopy\\sem_nanoparticles.png",
+      "filename": "sem_nanoparticles.png",
+      "sha256": "02aa9081f75ea4fdb02a84b2742bb522678b1577c40119361c2f4da0f706f7c1",
+      "size_bytes": 206145
+    }
+  ],
+  "technique": "SEM",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "particle_count": 40,
+    "pixel_size_nm": 0.5
+  }
+}

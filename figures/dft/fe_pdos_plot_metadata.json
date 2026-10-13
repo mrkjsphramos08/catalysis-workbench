@@ -1,0 +1,54 @@
+{
+  "figure_name": "fe_pdos_plot",
+  "timestamp_utc": "2026-10-13T04:57:32.199494+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\pdos_spin\\fe.pdos_atm#1(Fe)_wfc#1(s)",
+      "filename": "fe.pdos_atm#1(Fe)_wfc#1(s)",
+      "sha256": "cc7737ff4eefd9cfc1982a2b2d7477376fbd0c2ab67a75d97220744f156c4769",
+      "size_bytes": 6724
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\pdos_spin\\fe.pdos_atm#1(Fe)_wfc#2(d)",
+      "filename": "fe.pdos_atm#1(Fe)_wfc#2(d)",
+      "sha256": "a334fced5ffc397b11fddab531e71e3a79296edfc94bd123518bbe168f217d3c",
+      "size_bytes": 17292
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\pdos_spin\\fe.pdos_atm#2(O)_wfc#1(p)",
+      "filename": "fe.pdos_atm#2(O)_wfc#1(p)",
+      "sha256": "5e2c2d0c6f0f71ff05e75bd38cf66a3eace2aa18420560b961d7ce436ed8d749",
+      "size_bytes": 11996
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\pdos_spin\\fe.pdos_tot",
+      "filename": "fe.pdos_tot",
+      "sha256": "a3bf3c7c7224fdeda95f4c3cdd92699cf499d64abd5a5ef7a40f489de4efff42",
+      "size_bytes": 6722
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "type": "projwfc.x",
+    "specs": {
+      "Fe-s": {
+        "element": "Fe",
+        "orbital": "s"
+      },
+      "Fe-d": {
+        "element": "Fe",
+        "orbital": "d"
+      },
+      "O-p": {
+        "element": "O",
+        "orbital": "p"
+      }
+    },
+    "fermi_energy": 5.0
+  }
+}

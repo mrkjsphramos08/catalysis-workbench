@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig7_chemical_engineering_reactor",
+  "timestamp_utc": "2026-10-13T10:49:06.949297+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\reactor_performance_synthetic.csv",
+      "filename": "reactor_performance_synthetic.csv",
+      "sha256": "19445d6cd6607f718125e2090443fd1235fa1fe972be29b77adcf086f90b8702",
+      "size_bytes": 287
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_reactor"
+  }
+}

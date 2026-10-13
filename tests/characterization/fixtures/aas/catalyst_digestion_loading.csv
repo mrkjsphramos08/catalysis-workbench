@@ -1,0 +1,15 @@
+Sample_ID,Sample_Type,Element,Mass_mg,Digest_Vol_mL,Dilution_Factor,Measured_Conc_mg_L,Unit,Nominal_wt_pct
+PROC_BLANK,Blank,Pt,0.0,50.0,1.0,0.001,mg/L,0.0
+PROC_BLANK,Blank,Co,0.0,50.0,1.0,0.001,mg/L,0.0
+PROC_BLANK,Blank,Ni,0.0,50.0,1.0,0.002,mg/L,0.0
+Pt_C_Pristine_Rep1,Sample,Pt,2.5,50.0,2.0,4.94,mg/L,20.0
+Pt_C_Pristine_Rep2,Sample,Pt,2.48,50.0,2.0,4.91,mg/L,20.0
+Pt_C_Pristine_Rep3,Sample,Pt,2.52,50.0,2.0,4.99,mg/L,20.0
+PtCo_C_Rep1,Sample,Pt,3.0,50.0,2.0,4.41,mg/L,15.0
+PtCo_C_Rep2,Sample,Pt,3.02,50.0,2.0,4.45,mg/L,15.0
+PtCo_C_Rep1,Sample,Co,3.0,50.0,2.0,1.53,mg/L,5.0
+PtCo_C_Rep2,Sample,Co,3.02,50.0,2.0,1.54,mg/L,5.0
+NiFe_LDH_Rep1,Sample,Ni,4.0,50.0,5.0,3.92,mg/L,25.0
+NiFe_LDH_Rep2,Sample,Ni,3.98,50.0,5.0,3.9,mg/L,25.0
+NiFe_LDH_Rep1,Sample,Fe,4.0,50.0,5.0,1.96,mg/L,12.0
+NiFe_LDH_Rep2,Sample,Fe,3.98,50.0,5.0,1.95,mg/L,12.0

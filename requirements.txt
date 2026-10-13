@@ -1,0 +1,31 @@
+# Core scientific graphing workspace dependencies
+numpy>=1.26.0,<2.0.0
+pandas>=2.1.0
+scipy>=1.11.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+scienceplots>=2.1.0
+openpyxl>=3.1.0
+statsmodels>=0.14.0
+scikit-learn>=1.3.0
+pint>=0.23
+ase>=3.22.0
+pymatgen>=2023.12.0
+jupyterlab>=4.0.0
+ipykernel>=6.25.0
+pytest>=7.4.0
+
+# Optional kinetics / reactor simulation engine
+# cantera>=3.0.0
+
+# Electrochemistry & Potentiostat Data Parsing
+impedance>=1.7.0
+galvani>=0.5.0
+
+# Materials Characterization & Spectroscopy
+lmfit>=1.3.0
+pybaselines>=1.2.0
+scikit-image>=0.24.0
+Pillow>=10.0.0
+tifffile>=2024.1.0
+pygaps>=4.6.0

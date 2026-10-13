@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig_char5_ftir_stacked_comparison",
+  "timestamp_utc": "2026-10-13T12:52:39.811272+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\ftir\\catalyst_functionalized_ftir.csv",
+      "filename": "catalyst_functionalized_ftir.csv",
+      "sha256": "6526326844cce1fdabb00682e795774efb4b7ddfd7b38b6b93b7b5d6ded0a5ba",
+      "size_bytes": 24750
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\ftir\\catalyst_spent_ftir.csv",
+      "filename": "catalyst_spent_ftir.csv",
+      "sha256": "ea7a6079d8aa70aaa76496d73f97c231d5c94a6e185cfce660c7d54c45b464fc",
+      "size_bytes": 24757
+    }
+  ],
+  "technique": "FTIR",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "comparison": "pristine_vs_spent"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char12_bet_isotherm_bjh_pore_distribution",
+  "timestamp_utc": "2026-10-13T12:53:10.109101+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\bet\\mesoporous_catalyst_n2_isotherm.csv",
+      "filename": "mesoporous_catalyst_n2_isotherm.csv",
+      "sha256": "2d9f9c2a66ca901115c1ef266971d6bef18d288cfd2eee97ae56a6c483de554f",
+      "size_bytes": 882
+    }
+  ],
+  "technique": "BET",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "s_bet_m2_g": 152.61066289986786,
+    "mean_pore_d_nm": 6.218670413468387
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "figure_name": "fig3_metrohm_cv_multicycle",
+  "timestamp_utc": "2026-10-13T10:49:14.436524+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\metrohm\\metrohm_cv_multicycle.csv",
+      "filename": "metrohm_cv_multicycle.csv",
+      "sha256": "369c92ceb3e0b5bd467a78418f1d1eba66d04f05f2b6de455b0a0aa2293c6a7a",
+      "size_bytes": 20216
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "metrohm",
+    "technique": "CV"
+  }
+}

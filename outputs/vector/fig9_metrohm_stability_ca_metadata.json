@@ -1,0 +1,22 @@
+{
+  "figure_name": "fig9_metrohm_stability_ca",
+  "timestamp_utc": "2026-10-13T10:49:35.415023+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\metrohm\\metrohm_stability_ca.txt",
+      "filename": "metrohm_stability_ca.txt",
+      "sha256": "a8cb78196556af15c08e3b3df4f04f3bbb884bd46c77047b2d59464a2d6bf140",
+      "size_bytes": 11269
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "metrohm",
+    "technique": "CA"
+  }
+}

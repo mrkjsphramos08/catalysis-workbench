@@ -1,0 +1,32 @@
+Program PWSCF v.7.2
+     calculation = 'relax'
+     Starting BFGS ...
+     
+     iteration #  4
+     End of self-consistent calculation
+!    total energy              =    -120.45000000 Ry
+     convergence has been achieved
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+     atom    1 type  1   force =   0.01200000   0.00000000   0.00000000
+     atom    2 type  1   force =  -0.01200000   0.00000000   0.00000000
+
+     New ionic step:
+     iteration #  3
+     End of self-consistent calculation
+!    total energy              =    -120.45800000 Ry
+     convergence has been achieved
+
+     New ionic step:
+     iteration #  2
+     End of self-consistent calculation
+!    total energy              =    -120.46100000 Ry
+     convergence has been achieved
+     the Fermi energy is     8.1250 ev
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+     atom    1 type  1   force =   0.00002000   0.00000000   0.00000000
+     atom    2 type  1   force =  -0.00002000   0.00000000   0.00000000
+
+     End of BFGS Geometry Optimization
+     JOB DONE.

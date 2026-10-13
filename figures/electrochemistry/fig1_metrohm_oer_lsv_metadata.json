@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig1_metrohm_oer_lsv",
+  "timestamp_utc": "2026-10-13T10:49:09.926666+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\metrohm\\metrohm_oer_lsv.txt",
+      "filename": "metrohm_oer_lsv.txt",
+      "sha256": "9a9b2001ab7f81fa985964bba9b869f2510d5f229991e7c55d21434d1ab0ac27",
+      "size_bytes": 8492
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "metrohm",
+    "technique": "LSV",
+    "reaction": "OER"
+  }
+}

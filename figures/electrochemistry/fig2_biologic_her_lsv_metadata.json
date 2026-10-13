@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig2_biologic_her_lsv",
+  "timestamp_utc": "2026-10-13T10:49:12.301221+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\biologic\\biologic_her_lsv.mpt",
+      "filename": "biologic_her_lsv.mpt",
+      "sha256": "38eff338655b8100ac8ac02804608658b4762a88884800a0624e2a190c83a5c8",
+      "size_bytes": 8775
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "biologic",
+    "technique": "LSV",
+    "reaction": "HER"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "figure_name": "fig_char15_aas_gfaas_calibration_pt",
+  "timestamp_utc": "2026-10-13T12:53:20.811422+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\gfaas_calibration_pt.csv",
+      "filename": "gfaas_calibration_pt.csv",
+      "sha256": "354c96a3eb84b776af476a677754e55a3349834201c9ccd9181b062ef80ddef5",
+      "size_bytes": 1046
+    }
+  ],
+  "technique": "GFAAS",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "slope": 0.0023951741293532338,
+    "r_squared": 0.9999516817329145,
+    "lod": 0.29226923620944073
+  }
+}

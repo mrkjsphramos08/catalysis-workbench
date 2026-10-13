@@ -1,0 +1,27 @@
+{
+  "figure_name": "fig10_cross_instrument_benchmark",
+  "timestamp_utc": "2026-10-13T10:49:39.115413+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\metrohm\\metrohm_oer_lsv.txt",
+      "filename": "metrohm_oer_lsv.txt",
+      "sha256": "9a9b2001ab7f81fa985964bba9b869f2510d5f229991e7c55d21434d1ab0ac27",
+      "size_bytes": 8492
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\biologic\\biologic_oer_lsv.mpt",
+      "filename": "biologic_oer_lsv.mpt",
+      "sha256": "d7cb12143e544b3022e15bb7cb7cff8e88cceaf7abe0a3b5b4e16634721c7cd9",
+      "size_bytes": 9461
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "cross_instrument_benchmarking"
+  }
+}

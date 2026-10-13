@@ -1,0 +1,22 @@
+{
+  "figure_name": "bands_bands_plot",
+  "timestamp_utc": "2026-10-13T04:57:41.114337+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\bands.gnu",
+      "filename": "bands.gnu",
+      "sha256": "2834d9b4014ac7e6cb6f5f2c80db6bd902457a3b0dc18b885f7ef3ab379ff048",
+      "size_bytes": 2143
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "type": "bands.x",
+    "fermi_energy": 0.5
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig_char2_xrd_stacked_comparison",
+  "timestamp_utc": "2026-10-13T12:52:29.248668+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\xrd\\catalyst_pristine_xrd.csv",
+      "filename": "catalyst_pristine_xrd.csv",
+      "sha256": "5a33737e449762a8ad93dc63138b2ae7dea1464f51b304a96363d24b6d27b48c",
+      "size_bytes": 21430
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\xrd\\catalyst_treated_xrd.txt",
+      "filename": "catalyst_treated_xrd.txt",
+      "sha256": "222366b553d45c4be187ba1b26d6af3f20e0e04c5f025b996a8e7e42e0f41d90",
+      "size_bytes": 18397
+    }
+  ],
+  "technique": "XRD",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "comparison": "thermal_treatment"
+  }
+}

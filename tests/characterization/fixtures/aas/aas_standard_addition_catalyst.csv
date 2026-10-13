@@ -1,0 +1,16 @@
+Sample_ID,Sample_Type,Element,Wavelength_nm,Replicate,Added_Concentration,Absorbance,Sample_Aliquot_mL,Final_Volume_mL,Unit,Technique,Background_Correction
+Sample_Unspiked,StandardAddition,Co,240.7,1,0.0,0.0454,5.0,25.0,mg/L,FAAS,D2
+Sample_Unspiked,StandardAddition,Co,240.7,2,0.0,0.0466,5.0,25.0,mg/L,FAAS,D2
+Sample_Unspiked,StandardAddition,Co,240.7,3,0.0,0.0453,5.0,25.0,mg/L,FAAS,D2
+Spike_+0.50mgL,StandardAddition,Co,240.7,1,0.5,0.0733,5.0,25.0,mg/L,FAAS,D2
+Spike_+0.50mgL,StandardAddition,Co,240.7,2,0.5,0.072,5.0,25.0,mg/L,FAAS,D2
+Spike_+0.50mgL,StandardAddition,Co,240.7,3,0.5,0.0724,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.00mgL,StandardAddition,Co,240.7,1,1.0,0.1004,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.00mgL,StandardAddition,Co,240.7,2,1.0,0.1007,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.00mgL,StandardAddition,Co,240.7,3,1.0,0.1004,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.50mgL,StandardAddition,Co,240.7,1,1.5,0.1273,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.50mgL,StandardAddition,Co,240.7,2,1.5,0.1272,5.0,25.0,mg/L,FAAS,D2
+Spike_+1.50mgL,StandardAddition,Co,240.7,3,1.5,0.1265,5.0,25.0,mg/L,FAAS,D2
+Spike_+2.00mgL,StandardAddition,Co,240.7,1,2.0,0.154,5.0,25.0,mg/L,FAAS,D2
+Spike_+2.00mgL,StandardAddition,Co,240.7,2,2.0,0.1542,5.0,25.0,mg/L,FAAS,D2
+Spike_+2.00mgL,StandardAddition,Co,240.7,3,2.0,0.1551,5.0,25.0,mg/L,FAAS,D2

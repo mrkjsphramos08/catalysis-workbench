@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig1_dft_dos_pdos",
+  "timestamp_utc": "2026-10-13T10:48:50.845710+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\dft_dos_synthetic.csv",
+      "filename": "dft_dos_synthetic.csv",
+      "sha256": "3cf627cea45cf4bd3050aaed11d076eaf5d9fd9039c45b26ada532773f848557",
+      "size_bytes": 27942
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_dos"
+  }
+}

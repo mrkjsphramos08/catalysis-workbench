@@ -1,0 +1,4 @@
+Program PWSCF v.7.2
+     calculation = 'scf'
+     iteration #  3     ecut=    40.00 Ry
+     total energy              =     -15.70000000 Ry

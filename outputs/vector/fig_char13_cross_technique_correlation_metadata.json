@@ -1,0 +1,17 @@
+{
+  "figure_name": "fig_char13_cross_technique_correlation",
+  "timestamp_utc": "2026-10-13T12:53:13.682853+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\bet\\mesoporous_catalyst_n2_isotherm.csv",
+      "filename": "mesoporous_catalyst_n2_isotherm.csv",
+      "sha256": "2d9f9c2a66ca901115c1ef266971d6bef18d288cfd2eee97ae56a6c483de554f",
+      "size_bytes": 882
+    }
+  ],
+  "technique": "Comparative",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "r_squared": 0.9997487446818952
+  }
+}

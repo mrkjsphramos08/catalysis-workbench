@@ -1,0 +1,19 @@
+Program PWSCF v.7.2
+     calculation = 'scf'
+     spin-polarized calculation
+     number of atoms/cell      =            1
+     
+     iteration #  8     ecut=    60.00 Ry
+     End of self-consistent calculation
+
+          the Fermi energy is     12.3456 ev
+
+!    total energy              =     -62.15243100 Ry
+     estimated scf accuracy    <          2.4E-09 Ry
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+     atom    1 type  1   force =   0.00010000  -0.00005000   0.00000000
+
+     convergence has been achieved for threshold:  1.0000E-08 Ry
+
+     JOB DONE.

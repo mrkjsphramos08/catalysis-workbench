@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig_char17_aas_catalyst_loading",
+  "timestamp_utc": "2026-10-13T12:53:27.115102+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\catalyst_digestion_loading.csv",
+      "filename": "catalyst_digestion_loading.csv",
+      "sha256": "22186b449f9aba36edecf6bada05fdeb3a24379951217388728488a7d3303bf4",
+      "size_bytes": 848
+    }
+  ],
+  "technique": "AAS-Digestion",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "catalysts": [
+      "Pt/C (Pt)",
+      "PtCo/C (Pt)",
+      "PtCo/C (Co)",
+      "NiFe-LDH (Ni)",
+      "NiFe-LDH (Fe)"
+    ]
+  }
+}

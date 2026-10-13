@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig3_adsorption_energy_comparison",
+  "timestamp_utc": "2026-10-13T10:48:54.411151+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\adsorption_energies_synthetic.csv",
+      "filename": "adsorption_energies_synthetic.csv",
+      "sha256": "758d6c36a51c04562af383035c0ac991b831099f0e769617e1c03d75e9ee3fa5",
+      "size_bytes": 1244
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_adsorption"
+  }
+}

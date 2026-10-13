@@ -1,0 +1,23 @@
+{
+  "figure_name": "qe_cli_dos",
+  "timestamp_utc": "2026-10-13T04:32:54.974820+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\tests\\fixtures\\qe\\dos_spin.dat",
+      "filename": "dos_spin.dat",
+      "sha256": "5389cb818aa5640fcee28096993e938d672ed0fa960372742fa1ff85ef29fa34",
+      "size_bytes": 5400
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "type": "dos.x",
+    "fermi_energy": 5.0,
+    "energy_range": null
+  }
+}

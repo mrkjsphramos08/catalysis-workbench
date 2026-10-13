@@ -1,0 +1,9 @@
+sample_id,element,concentration,dilution_factor,unit
+Pristine_0h,Ni,0.012,1.0,mg/L
+Pristine_0h,Fe,0.008,1.0,mg/L
+OER_10h,Ni,0.145,2.0,mg/L
+OER_10h,Fe,0.082,2.0,mg/L
+OER_50h,Ni,0.42,2.0,mg/L
+OER_50h,Fe,0.265,2.0,mg/L
+OER_100h,Ni,0.89,2.0,mg/L
+OER_100h,Fe,0.58,2.0,mg/L

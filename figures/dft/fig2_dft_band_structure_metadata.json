@@ -1,0 +1,21 @@
+{
+  "figure_name": "fig2_dft_band_structure",
+  "timestamp_utc": "2026-10-13T10:48:52.263065+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\dft_bands_synthetic.csv",
+      "filename": "dft_bands_synthetic.csv",
+      "sha256": "7743eca6bb123d7a2d288690ff8a86400ce361414b4fa9d051e46fc8e6956031",
+      "size_bytes": 9116
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "figure_type": "benchmark_bands"
+  }
+}

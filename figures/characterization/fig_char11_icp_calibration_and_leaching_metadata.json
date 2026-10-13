@@ -1,0 +1,23 @@
+{
+  "figure_name": "fig_char11_icp_calibration_and_leaching",
+  "timestamp_utc": "2026-10-13T12:53:03.077143+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\icp\\icp_calibration_standards.csv",
+      "filename": "icp_calibration_standards.csv",
+      "sha256": "89343455e972db91e28f602e13297d4db7f14a96bd88c1f293eb780afbdcba4d",
+      "size_bytes": 956
+    },
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\icp\\catalyst_leaching_study.csv",
+      "filename": "catalyst_leaching_study.csv",
+      "sha256": "14f8660b44c3a0a31180b8f18db403d20f7a6d6cb842d8468d588f4d2cbeee82",
+      "size_bytes": 277
+    }
+  ],
+  "technique": "ICP",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "lod_mg_l": 0.0007189599425849347
+  }
+}

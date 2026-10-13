@@ -1,0 +1,24 @@
+{
+  "figure_name": "fig5_metrohm_eis_nyquist",
+  "timestamp_utc": "2026-10-13T10:49:20.573924+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\metrohm\\metrohm_fra_eis.txt",
+      "filename": "metrohm_fra_eis.txt",
+      "sha256": "7c7427bba7578c54fa840c2d2cb26f3d96940ffa2b65df99e5b352858d60fbbf",
+      "size_bytes": 1935
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "metrohm",
+    "technique": "EIS",
+    "rs_ohm": 5.205386428517126,
+    "rct_ohm": 45.00067023728695
+  }
+}

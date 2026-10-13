@@ -1,0 +1,18 @@
+{
+  "figure_name": "fig_char21_aas_qc_control_chart",
+  "timestamp_utc": "2026-10-13T12:53:37.903345+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\aas_qc_run_sequence.csv",
+      "filename": "aas_qc_run_sequence.csv",
+      "sha256": "c022b29045161cd5db0e527e66a0f24e358f415fa2fcf69594da61b0221ce115",
+      "size_bytes": 403
+    }
+  ],
+  "technique": "AAS-QC",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "sop": "EPA_7000B",
+    "mean_recovery": 99.86666666666667
+  }
+}

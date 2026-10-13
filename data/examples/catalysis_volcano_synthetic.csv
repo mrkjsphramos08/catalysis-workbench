@@ -1,0 +1,10 @@
+catalyst,descriptor_g_oh,activity_potential,candidate
+Pt,0.82,0.8,True
+Pd,0.65,0.64,True
+Rh,0.45,0.45,False
+Ir,0.5,0.51,False
+Ru,0.25,0.26,False
+Ni,0.15,0.14,False
+Cu,1.15,0.48,False
+Ag,1.35,0.28,False
+Au,1.48,0.15,False

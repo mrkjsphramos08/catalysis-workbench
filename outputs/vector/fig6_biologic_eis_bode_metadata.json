@@ -1,0 +1,22 @@
+{
+  "figure_name": "fig6_biologic_eis_bode",
+  "timestamp_utc": "2026-10-13T10:49:25.027135+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\electrochemistry\\biologic\\biologic_peis.mpt",
+      "filename": "biologic_peis.mpt",
+      "sha256": "b1973caac50125260885b19c179bea4fb1733ee77700092431b8b9b9c56a7655",
+      "size_bytes": 2904
+    }
+  ],
+  "parser_version": "1.2.0-qe",
+  "units": {
+    "energy_original": "Ry / eV (Quantum ESPRESSO)",
+    "energy_plotted": "eV",
+    "fermi_aligned": true
+  },
+  "analysis_metadata": {
+    "instrument": "biologic",
+    "technique": "EIS"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "figure_name": "faas_calibration_fe_aas_plot",
+  "timestamp_utc": "2026-10-13T12:53:57.034377+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\python_graphing\\data\\examples\\characterization\\aas\\faas_calibration_fe.csv",
+      "filename": "faas_calibration_fe.csv",
+      "sha256": "2f4a8ee8a0088bea7029f00dd756b630337318c80faa4981e71852ea6bd2ef12",
+      "size_bytes": 1486
+    }
+  ],
+  "technique": "AAS",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {}
+}
