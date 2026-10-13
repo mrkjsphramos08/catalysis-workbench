@@ -78,7 +78,7 @@ catalysis-workbench/
 ├── tests/                               # Comprehensive pytest test suite (90 passing tests)
 │   ├── fixtures/qe/                     # Authentic redistributable Quantum ESPRESSO test fixtures
 │   └── fixtures/electrochemistry/       # Metrohm and BioLogic benchmark fixtures
-├── environment.yml                      # Conda / Mamba environment specification (Python 3.12)
+├── environment.yml                      # Conda / Mamba environment specification (Python 3.11)
 ├── requirements.txt                     # Pip dependency specification
 ├── CONTEXT.md                           # Project domain vocabulary and scientific invariants
 ├── .gitignore
@@ -89,10 +89,12 @@ catalysis-workbench/
 
 ## 2. Environment Setup & Installation
 
-### Option A: Conda / Miniforge (Recommended)
+These commands are for a new installation. Reuse the existing environment; this stabilization did not install or change packages. A fresh Conda/pip installation remains unverified.
+
+### Option A: Conda / Miniforge
 ```bash
 conda env create -f environment.yml
-conda activate research-graphing
+conda activate catalysis-workbench
 ```
 
 ### Option B: Python Virtual Environment (venv / pip)
@@ -103,20 +105,19 @@ python -m venv research-graphing
 # On Linux / macOS:
 source research-graphing/bin/activate
 
-pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install -r requirements-tested.txt
 ```
 
 ### Dependency Notes & Limitations
-- **Python**: Engineered and verified for Python 3.11 and 3.12.
+- **Python**: Verified in the existing Python 3.11.0 environment. Python 3.12 was not tested. `requirements-tested.txt` pins observed direct dependencies, including NumPy 2.4.6; it is not a transitive lock.
 - **Cantera**: Optional dependency for detailed microkinetic reactor network integration; not required for core graphing and kinetic regression.
-- **Quantum ESPRESSO**: The workspace ingests outputs from Quantum ESPRESSO v5.x, v6.x, and v7.x (`pw.x`, `dos.x`, `projwfc.x`, `bands.x`, `neb.x`) and does not require local QE compiler/MPI binaries.
+- **Quantum ESPRESSO**: Text parsers cover `pw.x`, `dos.x`, `projwfc.x`, `bands.x`, and `neb.x` without local QE binaries. Authentic NEB validation covers the pinned upstream QE 6.0 example; broader version compatibility is unvalidated.
 
 ---
 
 ## 3. Publication Standards & Design Principles
 
-All generated figures adhere to international journal production guidelines:
+Shared figure presets are provided below; inspect each exported figure against the target journal requirements:
 - **Dimensions**:
   - Single column: 85 mm (3.35 in)
   - 1.5 column: 115 mm (4.53 in)
@@ -124,9 +125,9 @@ All generated figures adhere to international journal production guidelines:
 - **Typography**: Clear sans-serif hierarchy (Arial / DejaVu Sans), 8–9 pt labels, 7.5 pt legends and tick labels.
 - **Color Accessibility**: Default palettes use Okabe-Ito and Paul Tol colorblind-safe color cycles.
 - **Tick & Frame Styling**: Inward-facing ticks (`xtick.direction: in`), top/right spines enabled, clean white background.
-- **Vector Preservation**: TrueType fonts embedded as Type 42 (`pdf.fonttype = 42`, `ps.fonttype = 42`, `svg.fonttype = none`), ensuring fully editable text and lines in Adobe Illustrator or Inkscape.
+- **Vector Preservation**: PDF TrueType embedding (`pdf.fonttype = 42`); SVG retains text (`svg.fonttype = none`) but does not embed fonts. Verify fonts in the receiving application.
 - **Raster Resolution**: 300 DPI standard (configurable up to 600+ DPI).
-- **Data Provenance**: Automatic companion `*_metadata.json` files storing SHA-256 hashes of original calculation files, physical units, Fermi alignments, and timestamps.
+- **Data Provenance**: CLI workflows explicitly call provenance recorders for `*_metadata.json` sidecars with source-byte SHA-256 hashes and supplied metadata. `save_publication_figure` alone does not write provenance; missing physical information is not fabricated.
 
 ---
 
@@ -148,7 +149,7 @@ python -m scripts.main_plots --type pdos --input path/to/pdos_dir --prefix prefi
 # 4. Band structure from bands.x:
 python -m scripts.main_plots --type bands --input path/to/prefix.bands.dat.gnu --fermi 6.54
 
-# 5. NEB reaction free energy profile from neb.x:
+# 5. NEB electronic energy profile from neb.x:
 python -m scripts.main_plots --type neb --input path/to/prefix.dat
 ```
 
@@ -257,7 +258,7 @@ print(f"CO adsorption energy on Pt(111): {e_ads:.2f} eV")
 from parsers.quantum_espresso import parse_neb_output, plot_qe_neb_profile
 from scripts.utils import create_publication_figure, save_publication_figure
 
-# Parses prefix.dat, prefix.int, and prefix.path automatically
+# Reads prefix.dat and optional sibling prefix.int; pass log_filepath for stdout evidence
 neb_data = parse_neb_output("data/raw/co_oxidation.dat")
 
 print(f"Forward barrier: {neb_data.forward_barrier_ev:.2f} eV")
@@ -283,7 +284,8 @@ Researchers should retain the following primary outputs from their Quantum ESPRE
 | `bands.x` | `prefix.bands.dat.gnu` | Dispersion curve table formatted for Gnuplot | `parse_bands_gnu()` |
 | `neb.x` | `prefix.dat` | Discrete image reaction coordinates and energies | `parse_neb_output()` |
 | `neb.x` | `prefix.int` | Splined interpolated reaction pathway | `parse_neb_output()` |
-| `neb.x` | `prefix.path` | Summary barrier heights and convergence status | `parse_neb_output()` |
+| `neb.x` | stdout `.out` | Final-iteration barriers and convergence, via explicit `log_filepath` | `parse_neb_output()` |
+| `neb.x` | `prefix.path` | Restart format: explicitly rejected | Unsupported |
 
 *Note: Raw wavefunction binaries (`.wfc`), charge densities (`.charge-density`), and restart files (`.save/`) are large scratch files and do not need to be retained for graphing.*
 
@@ -434,7 +436,7 @@ Run the complete test suite:
 pytest -v
 ```
 
-All **132 unit and integration tests** pass across 6 domains:
+The stabilization run passed **164 tests with no warnings** in the existing Python 3.11 environment. See [dated verification and limits](docs/audits/STABILIZATION_REPORT.md). Coverage spans:
 - **Quantum ESPRESSO (DFT & Catalysis)**: SCF, DOS, PDOS, bands, NEB parsing, Fermi alignment, Ry-to-eV conversions, and Sabatier volcano models.
 - **Electrochemistry (Metrohm & BioLogic)**: File formats, IUPAC sign conventions, $iR$ compensation, CV redox integration, HER/OER overpotentials, quasi-steady-state Tafel slopes, and Randles EIS fitting.
 - **Materials Characterization & Spectroscopy**:
@@ -448,3 +450,62 @@ All **132 unit and integration tests** pass across 6 domains:
   - Cross-technique statistical correlation and causal disclaimers.
 - **Chemical Engineering & Visualization**: Arrhenius kinetics, reactor profile parity, journal dimension constraints, TrueType vector font embedding, and colorblind-safe palettes.
 
+## 11. Repository Agent Skills
+
+Agent Skills are focused instructions and optional references/scripts that agents load when relevant to a task. This repository keeps one shared collection in [`.agents/skills/`](.agents/skills/), using the [open Agent Skills specification](https://agentskills.io/specification). Start with [AGENTS.md](AGENTS.md) for architecture, environment, data protection, and verification conventions.
+
+| Skill | Use it for |
+| --- | --- |
+| [scientific-python](.agents/skills/scientific-python/SKILL.md) | Existing Python APIs, numerical methods, dependencies, and tests |
+| [quantum-espresso](.agents/skills/quantum-espresso/SKILL.md) | QE parsing, DOS/PDOS, bands, NEB, and adsorption energies |
+| [electrochemistry](.agents/skills/electrochemistry/SKILL.md) | Autolab/BioLogic, CV/LSV/EIS, HER/OER, CHE, and Cdl/ECSA |
+| [materials-characterization](.agents/skills/materials-characterization/SKILL.md) | XRD, FTIR, Raman, SEM/TEM, ICP/AAS, and BET/BJH |
+| [scientific-validation](.agents/skills/scientific-validation/SKILL.md) | Parser/equation changes, numerical references, assumptions, and uncertainty |
+| [publication-figures](.agents/skills/publication-figures/SKILL.md) | Journal dimensions, figure review, and vector/raster exports |
+| [research-reproducibility](.agents/skills/research-reproducibility/SKILL.md) | Original datasets, provenance, environments, and regeneration |
+
+### Discovery and explicit requests
+
+Current [Codex documentation](https://developers.openai.com/codex/skills) documents discovery of `.agents/skills` from the working directory up to the repository root. Current [Antigravity documentation](https://antigravity.google/docs/skills) also uses workspace-root `.agents/skills` for its IDE, CLI, and 2.0 surfaces; `.agent/skills` is retained for backward compatibility. Open this repository as the workspace and start a fresh conversation after adding skills. No duplicated vendor collections are needed.
+
+Descriptions guide selection; full instructions and references are loaded as needed. In Codex, request a skill with `$quantum-espresso` or select it using the available skill picker. In Antigravity, mention its name explicitly; the IDE Customizations menu exposes active skills. A portable fallback is: "Read `.agents/skills/quantum-espresso/SKILL.md` and apply it to this task." Other Agent Skills clients may require configuration of this directory; shared file format alone does not guarantee discovery. If a client does not load `AGENTS.md`, explicitly ask it to read that file too.
+
+Example prompts:
+
+- "Use `$quantum-espresso` and `$scientific-validation` to fix a PDOS parser."
+- "Use electrochemistry and publication-figures to generate an HER LSV figure from BioLogic data; identify missing experimental metadata first."
+- "Use materials-characterization and scientific-validation to analyze Raman spectra and fit peaks."
+- "Use materials-characterization and publication-figures to create journal-ready figures from calibrated SEM images."
+- "Use research-reproducibility to ensure original research datasets are preserved."
+
+For calculation or parser changes, combine the relevant domain skill with scientific-validation. For figures involving new quantitative analysis, include it as well. See the [validation record](docs/AGENT_SKILLS_VALIDATION.md) for the six representative discovery reviews, actual verification results, and known scientific/environment limitations. Automatic activation has not been tested in a fresh Codex or Antigravity session.
+
+### Create, update, and validate skills
+
+Add `.agents/skills/<lowercase-hyphen-name>/SKILL.md` with YAML `name` matching its directory and a task-specific `description` explaining when to use it. Keep actionable instructions short, put longer material in linked `references/`, and add `scripts/` only for reusable automation. Use relative local links and standard frontmatter; avoid vendor-specific fields. Inspect actual code/tests before documenting APIs. Update the routing table here and in `AGENTS.md` when adding a skill; keep one canonical collection.
+
+When updating a skill, preserve useful existing guidance, revise only the affected workflow/references, and recheck example prompts for ambiguous or missing triggers. Validate with the existing project interpreter (PowerShell shown):
+
+```powershell
+.\research-graphing\Scripts\python.exe .agents/skills/scientific-validation/scripts/validate_skills.py
+.\research-graphing\Scripts\python.exe .agents/skills/scientific-validation/scripts/test_validate_skills.py
+.\research-graphing\Scripts\python.exe -m pytest -q
+```
+
+In an activated environment use `python` instead. The validator requires PyYAML, available in the audited environment; it gives an actionable error if missing. It checks the seven required skills plus additional skill directories, YAML metadata, matching names, and inline local file links. It does not check external URLs, heading anchors, scientific correctness, API existence, or real activation; review these separately. An available specification validator such as `skills-ref validate <skill-directory>` can provide an additional check. The bundled Codex skill-creator `quick_validate.py` was also used during creation, but is not a repository dependency.
+
+Demonstration figure commands are in `AGENTS.md` and earlier README sections. They write outputs and reject collisions by default; use `--output-root` for isolation and `--overwrite` only for deliberate replacement. Original scientific code, data, styles, and historical documentation were preserved when adding these skills; current caveats and narrower evidence statements are recorded in the skills and validation record.
+
+
+
+## Stabilization and migration (2026-10-13)
+
+See the [stabilization report](docs/audits/STABILIZATION_REPORT.md) for numerical evidence, preserved-data checks, warning fixes, and runtime skill-discovery limits.
+
+- Figure exports now protect existing files (`overwrite=False`) and preserve canvas dimensions (`bbox_inches=None`). To restrict the Python API to supplied destinations, use `include_default_dirs=False`; `close=True` releases figures after export. CLI exports support `--output-root` and explicit `--overwrite`.
+- Electrochemical imports preserve missing reference/temperature as unknown. Quantitative RHE/OER corrections require confirmed conditions; specify `--reference-electrode Ag/AgCl_3m --temperature-k 298.15 --ph 14` only when these describe the experiment. Bare Ag/AgCl does not identify a filling solution. Python import/getter APIs accept explicit conditions.
+- FTIR transmittance requires `transmittance_unit="percent"` or `"fraction"`, or a unit-bearing header. CLI: `--transmittance-unit percent`. Ambiguous signal headers also require `--signal-type transmittance`. Absorbance conversion never guesses units from magnitudes.
+- NEB native `.dat` uses coordinate/energy/error. Supply `--neb-log run.out` for convergence evidence. `.path` is a restart file, not a barrier summary. Electronic energies are not Gibbs free energies.
+- Direct microscopy analysis requires calibrated pixels (`--pixel-size` in nm/px or verified file metadata). ICP/AAS leaching/loading convenience routes with hardcoded sample conditions now reject the request; use the existing Python functions with explicit measured conditions.
+
+Historical notebooks and figures are preserved byte-for-byte. Their older calls/sidecars may need the explicit inputs above when rerun; they were not regenerated as part of stabilization.

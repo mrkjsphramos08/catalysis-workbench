@@ -29,6 +29,7 @@ def parse_ftir_file(
     signal_type: Optional[str] = None,  # 'transmittance', 'absorbance', 'reflectance'
     sample_id: Optional[str] = None,
     delimiter: Optional[str] = None,
+    transmittance_unit: Optional[str] = None,
 ) -> CharacterizationData:
     """
     Parse an exported FTIR spectrum into standardized CharacterizationData.
@@ -47,6 +48,9 @@ def parse_ftir_file(
         Sample name identifier. Defaults to filename stem.
     delimiter : str, optional
         Explicit delimiter. If None, auto-detected.
+    transmittance_unit : str, optional
+        'percent' or 'fraction'. Required for transmittance unless the header
+        explicitly supplies units; never inferred from measured magnitudes.
 
     Returns
     -------
@@ -86,11 +90,12 @@ def parse_ftir_file(
                 skip_rows = idx
                 break
 
-        sep = delimiter if delimiter is not None else r"[\s,;\t]+"
+        header = lines[skip_rows] if skip_rows < len(lines) else ""
+        sep = delimiter if delimiter is not None else next((candidate for candidate in ("\t", ",", ";") if candidate in header), r"\s+")
         try:
             df = pd.read_csv(p, skiprows=skip_rows, sep=sep, engine="python" if delimiter is None else "c", comment="#")
         except Exception:
-            df = pd.read_csv(p, skiprows=skip_rows, delim_whitespace=True)
+            df = pd.read_csv(p, skiprows=skip_rows, sep=r"\s+")
 
     df = df.dropna(how="all", axis=1)
     cols = list(df.columns)
@@ -143,12 +148,18 @@ def parse_ftir_file(
         elif any(k in sig_header for k in ["reflectance", "%r"]):
             sig_type = "reflectance"
         else:
-            # Infer from numerical value range
-            # Transmittance is typically 0-100 or 0-1.0
-            if np.max(sig_clean) > 2.5:
-                sig_type = "transmittance"  # %T
-            else:
-                sig_type = "absorbance"
+            raise InvalidUnitsError("Ambiguous FTIR signal; supply signal_type explicitly.")
+
+    if sig_type not in ("transmittance", "absorbance", "reflectance"):
+        raise InvalidUnitsError("signal_type must be transmittance, absorbance, or reflectance.")
+    unit_str = "a.u."
+    if sig_type == "transmittance":
+        unit_header = str(col_sig).lower()
+        header_unit = "percent" if "%" in unit_header or "percent" in unit_header else "fraction" if "fraction" in unit_header else None
+        unit_str = _transmittance_unit(transmittance_unit or header_unit)
+        if header_unit and transmittance_unit and unit_str != header_unit:
+            raise InvalidUnitsError("Explicit transmittance_unit conflicts with the column header.")
+        raw_metadata["transmittance_unit"] = unit_str
 
     # Sort descending or ascending? We store sorted ascending internally for interpolation/integration,
     # but publication plotting convention displays descending on x-axis.
@@ -156,9 +167,9 @@ def parse_ftir_file(
     wn_clean = wn_clean[sort_idx]
     sig_clean = sig_clean[sort_idx]
 
-    unit_str = "%" if sig_type == "transmittance" and np.max(sig_clean) > 1.5 else "fraction" if sig_type == "transmittance" else "a.u."
     raw_metadata["signal_type"] = sig_type
-    raw_metadata["sampling_mode"] = raw_metadata.get("mode", "transmission/ATR")
+    if "mode" in raw_metadata:
+        raw_metadata["sampling_mode"] = raw_metadata["mode"]
 
     return CharacterizationData(
         technique="FTIR",
@@ -176,9 +187,19 @@ def parse_ftir_file(
     )
 
 
+def _transmittance_unit(unit: Optional[str]) -> str:
+    aliases = {"%": "percent", "%t": "percent", "percent": "percent", "fraction": "fraction"}
+    normalized = aliases.get(str(unit).strip().lower())
+    if normalized is None:
+        raise InvalidUnitsError("Supply transmittance_unit='percent' or 'fraction'; magnitude inference is unsafe.")
+    return normalized
+
+
 def convert_transmittance_to_absorbance(
     data: CharacterizationData,
     clamp_nonpositive: bool = False,
+    *,
+    transmittance_unit: Optional[str] = None,
 ) -> CharacterizationData:
     """
     Convert Transmittance to Absorbance strictly adhering to the Beer-Lambert relation:
@@ -197,17 +218,20 @@ def convert_transmittance_to_absorbance(
     CharacterizationData
         New CharacterizationData instance with y converted to Absorbance.
     """
-    sig_type = data.metadata.get("signal_type", "transmittance").lower()
-    if sig_type != "transmittance":
+    sig_type = data.metadata.get("signal_type", "").lower()
+    if sig_type == "absorbance":
         # Already absorbance
         return data.copy()
+    if sig_type != "transmittance":
+        raise InvalidUnitsError("Absorbance conversion requires signal_type='transmittance'.")
 
     y_t = data.y.copy()
-    # If percentage, scale to fraction
-    if np.max(y_t) > 1.5:
-        t_frac = y_t / 100.0
-    else:
-        t_frac = y_t
+    unit = _transmittance_unit(transmittance_unit or data.metadata.get("transmittance_unit") or data.y_unit)
+    if transmittance_unit and data.y_unit in ("%", "percent", "fraction") and unit != _transmittance_unit(data.y_unit):
+        raise InvalidUnitsError("Explicit transmittance_unit conflicts with dataset units.")
+    if not np.isfinite(y_t).all():
+        raise InvalidUnitsError("Transmittance must be finite.")
+    t_frac = y_t / 100.0 if unit == "percent" else y_t
 
     nonpos = t_frac <= 0.0
     if np.any(nonpos):
@@ -218,7 +242,7 @@ def convert_transmittance_to_absorbance(
                 "Beer-Lambert absorbance -log10(T) is mathematically undefined for T <= 0."
             )
         else:
-            t_frac = np.clip(t_frac, 1e-4, 1.0)
+            t_frac = np.where(nonpos, 1e-4, t_frac)
 
     abs_arr = -np.log10(t_frac)
 
@@ -227,5 +251,6 @@ def convert_transmittance_to_absorbance(
     out.y_name = "Absorbance"
     out.y_unit = "a.u."
     out.metadata["signal_type"] = "absorbance"
-    out.add_processing_step("convert_to_absorbance", {"formula": "A = -log10(T)"})
+    out.add_processing_step("convert_to_absorbance", {"formula": "A = -log10(T)", "transmittance_unit": unit,
+                                                     "clamp_nonpositive": clamp_nonpositive, "clamped_count": int(nonpos.sum())})
     return out

@@ -15,7 +15,7 @@ import numpy as np
 import scipy.stats as stats
 
 from parsers.characterization.common import CharacterizationData
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 # N2 physical constants at 77.35 K
@@ -251,7 +251,7 @@ def plot_isotherm(
     ax.legend(loc="upper left", frameon=False, fontsize=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -308,7 +308,7 @@ def plot_bet_linear(
     ax.legend(loc="lower right", frameon=False, fontsize=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -364,5 +364,5 @@ def plot_bjh_pore_distribution(
     ax.set_ylim(bottom=0)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax

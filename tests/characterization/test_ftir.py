@@ -20,7 +20,7 @@ FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures" / "ftir"
 
 def test_parse_ftir_file():
     """Verify parsing of transmittance FTIR spectrum."""
-    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv")
+    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv", transmittance_unit="percent")
     assert isinstance(data, CharacterizationData)
     assert data.technique == "FTIR"
     assert data.x_name == "Wavenumber"
@@ -32,7 +32,7 @@ def test_parse_ftir_file():
 
 def test_beer_lambert_transmittance_to_absorbance():
     """Verify exact numerical conversion A = -log10(T) and nonpositive rejection."""
-    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv")
+    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv", transmittance_unit="percent")
     # T = 100% -> A = 0.0, T = 10% -> A = 1.0, T = 1% -> A = 2.0
     d_abs = convert_transmittance_to_absorbance(data)
     assert d_abs.y_name == "Absorbance"
@@ -47,7 +47,7 @@ def test_beer_lambert_transmittance_to_absorbance():
 
 def test_ftir_band_detection_and_integration():
     """Verify detection of O-H, C=O carbonyl, and band area integration."""
-    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv")
+    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv", transmittance_unit="percent")
     bands = analyze_ftir_bands(data)
     assert len(bands) >= 3
 
@@ -64,12 +64,12 @@ def test_ftir_band_detection_and_integration():
 
 def test_ftir_plotting_descending_axis():
     """Verify that FTIR plotting inverts x-axis (descending wavenumber)."""
-    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv")
+    data = parse_ftir_file(FIXTURES_DIR / "catalyst_functionalized_ftir.csv", transmittance_unit="percent")
     fig, ax = plot_ftir_spectrum(data, show_regions=True)
     assert fig is not None
     x_lim = ax.get_xlim()
     assert x_lim[0] > x_lim[1]  # Inverted: 4000 to 400 cm^-1
 
-    data_spent = parse_ftir_file(FIXTURES_DIR / "catalyst_spent_ftir.csv")
+    data_spent = parse_ftir_file(FIXTURES_DIR / "catalyst_spent_ftir.csv", transmittance_unit="percent")
     fig_stk, ax_stk = plot_ftir_stacked([data, data_spent], labels=["Pristine", "Spent"])
     assert fig_stk is not None

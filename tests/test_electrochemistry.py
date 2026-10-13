@@ -58,7 +58,7 @@ def test_convert_potential_to_rhe():
     E_RHE = 0.500 + 0.1970 + 0.059155 * 14 = 0.500 + 0.1970 + 0.82817 = 1.52517 V
     """
     v_meas = np.array([0.0, 0.500, 1.000])
-    v_rhe = convert_potential_to_rhe(v_meas, reference_electrode="ag/agcl", ph=14.0)
+    v_rhe = convert_potential_to_rhe(v_meas, reference_electrode="ag/agcl_sat", ph=14.0, temperature_k=298.15)
     expected_0_5 = 0.500 + 0.1970 + (8.314462618 * 298.15 * np.log(10) / 96485.33212) * 14.0
     assert v_rhe[1] == pytest.approx(expected_0_5, rel=1e-4)
 
@@ -82,7 +82,7 @@ def test_ir_compensation_and_double_compensation_guard():
     assert v_corr[1] == pytest.approx(1.50)
 
     # Test guard on schema object
-    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt")
+    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt", temperature_k=298.15)
     data.ir_compensated = True
     with pytest.raises(ValueError, match="already marked as iR-compensated"):
         data.get_ir_corrected_potential(ru_ohm=4.0)
@@ -94,7 +94,7 @@ def test_ir_compensation_and_double_compensation_guard():
 
 def test_extract_redox_peaks_and_charge():
     """Test oxidation and reduction peak extraction and voltammetric charge."""
-    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_cv_multicycle.csv")
+    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_cv_multicycle.csv", temperature_k=298.15)
     cycle_1 = data.get_cycle(1)
 
     peaks = extract_redox_peaks(cycle_1.potential_V, cycle_1.current_A)
@@ -119,20 +119,20 @@ def test_extract_redox_peaks_and_charge():
 def test_extract_overpotential_at_current():
     """Test eta_10 extraction for OER and HER."""
     # OER dataset
-    data_oer = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt")
-    pot_rhe = data_oer.get_potential_vs_rhe(reference="ag/agcl", ph=14.0)
+    data_oer = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt", temperature_k=298.15)
+    pot_rhe = data_oer.get_potential_vs_rhe(reference="ag/agcl_sat", ph=14.0, temperature_k=298.15)
     j = data_oer.get_current_density(unit="mA/cm^2")
 
-    eta_10 = extract_overpotential_at_current(pot_rhe, j, target_j=10.0, reaction="OER")
+    eta_10 = extract_overpotential_at_current(pot_rhe, j, target_j=10.0, reaction="OER", temperature_k=298.15)
     assert eta_10 is not None
     # In alkaline OER on NiFe-LDH, eta_10 is typically 200 - 550 mV
     assert 200.0 < eta_10 < 600.0
 
     # HER dataset
-    data_her = load_electrochemistry_data(FIXTURES_DIR / "biologic" / "biologic_her_lsv.mpt")
-    pot_her_rhe = data_her.get_potential_vs_rhe(reference="ag/agcl", ph=0.3)
+    data_her = load_electrochemistry_data(FIXTURES_DIR / "biologic" / "biologic_her_lsv.mpt", temperature_k=298.15)
+    pot_her_rhe = data_her.get_potential_vs_rhe(reference="ag/agcl_sat", ph=0.3, temperature_k=298.15)
     j_her = data_her.get_current_density(unit="mA/cm^2")
-    eta_10_her = extract_overpotential_at_current(pot_her_rhe, j_her, target_j=10.0, reaction="HER")
+    eta_10_her = extract_overpotential_at_current(pot_her_rhe, j_her, target_j=10.0, reaction="HER", temperature_k=298.15)
     assert eta_10_her is not None
     assert 30.0 < eta_10_her < 250.0
 
@@ -143,8 +143,8 @@ def test_extract_overpotential_at_current():
 
 def test_calculate_tafel_slope_and_warning():
     """Test Tafel slope calculation and non-steady-state warning at high scan rates."""
-    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt")
-    pot_rhe = data.get_potential_vs_rhe(reference="ag/agcl", ph=14.0)
+    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt", temperature_k=298.15)
+    pot_rhe = data.get_potential_vs_rhe(reference="ag/agcl_sat", ph=14.0, temperature_k=298.15)
     j = data_oer = data.get_current_density(unit="mA/cm^2")
 
     # Fit in the kinetic region (j between 1.0 and 10.0 mA/cm^2)
@@ -154,6 +154,7 @@ def test_calculate_tafel_slope_and_warning():
         current_range=(1.0, 10.0),
         reaction="OER",
         scan_rate_V_s=0.005,  # 5 mV/s (quasi-steady-state)
+        temperature_k=298.15,
     )
 
     assert 30.0 < res["tafel_slope_mV_dec"] < 160.0
@@ -167,6 +168,7 @@ def test_calculate_tafel_slope_and_warning():
             j,
             current_range=(1.0, 10.0),
             scan_rate_V_s=0.050,  # 50 mV/s
+            temperature_k=298.15,
         )
 
 
@@ -203,7 +205,7 @@ def test_calculate_cdl_and_ecsa():
 
 def test_eis_polar_conversion_and_circuit_fitting():
     """Test polar conversion, Randles circuit fitting, and lin-KK validation."""
-    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_fra_eis.txt")
+    data = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_fra_eis.txt", temperature_k=298.15)
     f = data.frequency_Hz
     zr = data.impedance_real_ohm
     zi = data.impedance_imag_ohm
@@ -261,8 +263,8 @@ def test_cp_stability_metrics():
 
 def test_cross_instrument_benchmarking():
     """Test comparison of matched OER LSV from Metrohm Autolab and BioLogic EC-Lab."""
-    d_metrohm = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt")
-    d_biologic = load_electrochemistry_data(FIXTURES_DIR / "biologic" / "biologic_oer_lsv.mpt")
+    d_metrohm = load_electrochemistry_data(FIXTURES_DIR / "metrohm" / "metrohm_oer_lsv.txt", temperature_k=298.15)
+    d_biologic = load_electrochemistry_data(FIXTURES_DIR / "biologic" / "biologic_oer_lsv.mpt", temperature_k=298.15)
 
     comp = compare_instrument_lsv(d_metrohm, d_biologic, reaction="OER", target_j=10.0)
 

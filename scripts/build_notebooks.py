@@ -17,8 +17,8 @@ def create_metrohm_notebook():
 This interactive research notebook provides an end-to-end scientific analysis pipeline for experimental electrochemistry datasets acquired from **Metrohm Autolab** potentiostats using **NOVA** software.
 
 ### Analysis Modules Covered:
-1. **Oxygen Evolution Reaction (OER) LSV**: Calibration of reference potentials ($E$ vs RHE), software uncompensated resistance ($iR$) compensation, and overpotential extraction ($\eta_{10}, \eta_{50}, \eta_{100}$).
-2. **Multi-Cycle Cyclic Voltammetry (CV)**: Peak detection ($E_{pa}, E_{pc}, \Delta E_p$) and voltammetric charge integration ($Q = \\int I dt$).
+1. **Oxygen Evolution Reaction (OER) LSV**: Calibration of reference potentials ($E$ vs RHE), software uncompensated resistance ($iR$) compensation, and overpotential extraction ($\\eta_{10}, \\eta_{50}, \\eta_{100}$).
+2. **Multi-Cycle Cyclic Voltammetry (CV)**: Peak detection ($E_{pa}, E_{pc}, \\Delta E_p$) and voltammetric charge integration ($Q = \\int I dt$).
 3. **Electrochemical Impedance Spectroscopy (FRA EIS)**: Complex impedance polar conversion, publication Nyquist plots, and Randles circuit fitting ($R_s - [R_{ct} \\parallel \\mathrm{CPE}]$).
 4. **Potentiostatic Chronoamperometry (CA)**: Long-term durability analysis, current retention percentage, and degradation rate (\\%/h).
 """),
@@ -54,7 +54,7 @@ print("Environment successfully initialized with publication styles.")
 """),
         nbf.v4.new_markdown_cell("""## 1. Oxygen Evolution Reaction (OER) Linear Sweep Voltammetry
 
-Load raw Metrohm Autolab ASCII export (`metrohm_oer_lsv.txt`), inspect automatically parsed metadata, and extract the overpotential delivering $10\\,\\mathrm{mA/cm^2}$ geometric current density ($\eta_{10}$).
+Load raw Metrohm Autolab ASCII export (`metrohm_oer_lsv.txt`), inspect automatically parsed metadata, and extract the overpotential delivering $10\\,\\mathrm{mA/cm^2}$ geometric current density ($\\eta_{10}$).
 """),
         nbf.v4.new_code_cell("""lsv_file = data_dir / "metrohm" / "metrohm_oer_lsv.txt"
 data_oer = load_electrochemistry_data(lsv_file, instrument="metrohm", technique="LSV")
@@ -84,7 +84,7 @@ plt.show()
 """),
         nbf.v4.new_markdown_cell("""## 2. Multi-Cycle Cyclic Voltammetry (CV)
 
-Analyze a 3-cycle CV scan (`metrohm_cv_multicycle.csv`), identify redox peak potentials ($E_{pa}, E_{pc}$), peak separation ($\Delta E_p$), and calculate voltammetric charge passed during cycling.
+Analyze a 3-cycle CV scan (`metrohm_cv_multicycle.csv`), identify redox peak potentials ($E_{pa}, E_{pc}$), peak separation ($\\Delta E_p$), and calculate voltammetric charge passed during cycling.
 """),
         nbf.v4.new_code_cell("""cv_file = data_dir / "metrohm" / "metrohm_cv_multicycle.csv"
 data_cv = load_electrochemistry_data(cv_file, instrument="metrohm", technique="CV")
@@ -169,7 +169,7 @@ def create_biologic_notebook():
 This interactive research notebook provides an end-to-end scientific processing pipeline for experimental electrochemistry data acquired from **BioLogic** potentiostats using **EC-Lab** software.
 
 ### Analysis Modules Covered:
-1. **Hydrogen Evolution Reaction (HER) LSV**: Automatic `.mpt` ASCII parsing, RHE conversion, and cathodic overpotential extraction ($\eta_{-10}, \eta_{-50}$).
+1. **Hydrogen Evolution Reaction (HER) LSV**: Automatic `.mpt` ASCII parsing, RHE conversion, and cathodic overpotential extraction ($\\eta_{-10}, \\eta_{-50}$).
 2. **Potentio Electrochemical Impedance Spectroscopy (PEIS)**: Dual-panel stacked Bode plots (magnitude $|Z|$ and phase angle $\\phi$ vs frequency).
 3. **Lin-KK Kramers-Kronig Consistency Validation**: Rigorous statistical verification of stationarity, linearity, and causality using Schönleber's criterion.
 4. **Galvanostatic Chronopotentiometry (CP)**: Durability monitoring at $-10\\,\\mathrm{mA/cm^2}$ and potential drift rate estimation ($\\mathrm{mV/h}$).
@@ -202,7 +202,7 @@ print("BioLogic processing pipeline loaded.")
 """),
         nbf.v4.new_markdown_cell("""## 1. Hydrogen Evolution Reaction (HER) Polarization Curves
 
-Load raw BioLogic `.mpt` export (`biologic_her_lsv.mpt`) and extract cathodic overpotentials ($\eta_{-10}$ and $\eta_{-50}$).
+Load raw BioLogic `.mpt` export (`biologic_her_lsv.mpt`) and extract cathodic overpotentials ($\\eta_{-10}$ and $\\eta_{-50}$).
 """),
         nbf.v4.new_code_cell("""her_file = data_dir / "biologic" / "biologic_her_lsv.mpt"
 data_her = load_electrochemistry_data(her_file, instrument="biologic", technique="LSV")
@@ -294,7 +294,7 @@ This notebook executes a rigorous inter-instrument comparison between **Metrohm 
 
 ### Objectives:
 1. Demonstrate standardized data harmonization across disparate manufacturer formats.
-2. Quantify kinetic agreement ($\eta_{10}, \eta_{50}$) and inter-instrument residual current densities $\Delta j(E)$.
+2. Quantify kinetic agreement ($\\eta_{10}, \\eta_{50}$) and inter-instrument residual current densities $\\Delta j(E)$.
 3. Compare quasi-steady-state Tafel slopes and assess potential measurement bias.
 """),
         nbf.v4.new_code_cell("""import sys
@@ -337,7 +337,7 @@ print(f"BioLogic Data Points: {len(data_b.potential_V)} | Area: {data_b.electrod
 """),
         nbf.v4.new_markdown_cell("""## 2. Cross-Instrument Polarization Benchmark & Residuals
 
-Evaluate the residual difference $\Delta j(E) = j_{\\mathrm{Metrohm}}(E) - j_{\\mathrm{BioLogic}}(E)$ across the kinetic polarization window.
+Evaluate the residual difference $\\Delta j(E) = j_{\\mathrm{Metrohm}}(E) - j_{\\mathrm{BioLogic}}(E)$ across the kinetic polarization window.
 """),
         nbf.v4.new_code_cell("""comp = compare_instrument_lsv(data_m, data_b, reaction="OER", target_j=10.0)
 
@@ -358,7 +358,7 @@ plt.show()
 """),
         nbf.v4.new_markdown_cell("""## 3. Kinetic Parameters Concordance Table
 
-Compare extracted overpotentials ($\eta_{10}, \eta_{50}$) and Tafel slopes between instruments.
+Compare extracted overpotentials ($\\eta_{10}, \\eta_{50}$) and Tafel slopes between instruments.
 """),
         nbf.v4.new_code_cell("""# Extract overpotentials
 pot_m = data_m.get_potential_vs_rhe()

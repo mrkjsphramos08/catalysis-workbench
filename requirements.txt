@@ -1,5 +1,6 @@
+# Python 3.11 baseline; see requirements-tested.txt for exact tested direct dependencies.
 # Core scientific graphing workspace dependencies
-numpy>=1.26.0,<2.0.0
+numpy>=2.4.0,<3.0.0
 pandas>=2.1.0
 scipy>=1.11.0
 matplotlib>=3.8.0
@@ -29,3 +30,4 @@ scikit-image>=0.24.0
 Pillow>=10.0.0
 tifffile>=2024.1.0
 pygaps>=4.6.0
+PyYAML>=6.0

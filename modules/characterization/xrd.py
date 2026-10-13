@@ -24,7 +24,7 @@ from modules.characterization.common_peaks import (
     subtract_baseline,
 )
 from scripts.config import get_figure_dimensions
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -283,7 +283,7 @@ def plot_xrd_pattern(
     ax.set_ylim(0, y_max * 1.15)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -335,7 +335,7 @@ def plot_xrd_stacked(
 
     ax.legend(loc="upper right", frameon=False, fontsize=8)
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -404,5 +404,5 @@ def plot_xrd_fit(
         ax_top.set_xlim(region)
         ax_bot.set_xlim(region)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, (ax_top, ax_bot)

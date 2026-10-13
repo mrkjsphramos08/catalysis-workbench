@@ -22,6 +22,7 @@ from parsers.electrochemistry.schema import (
     MissingChannelError,
     StandardizedElectrochemicalData,
     compute_file_sha256,
+    resolve_experimental_conditions,
 )
 
 try:
@@ -118,11 +119,12 @@ def parse_biologic_mpt(
     technique: Optional[str] = None,
     custom_mapping: Optional[Dict[str, str]] = None,
     electrode_area_cm2: Optional[float] = None,
-    reference_electrode: str = "Ag/AgCl",
+    reference_electrode: Optional[str] = None,
     ph: Optional[float] = None,
     catalyst_loading_mg_cm2: Optional[float] = None,
     ru_ohm: Optional[float] = None,
     encoding: str = "latin1",
+    temperature_k: Optional[float] = None,
 ) -> StandardizedElectrochemicalData:
     """
     Parse BioLogic EC-Lab .mpt ASCII data file.
@@ -137,7 +139,7 @@ def parse_biologic_mpt(
         User override for signal mapping.
     electrode_area_cm2 : float, optional
         Geometric surface area in cm^2.
-    reference_electrode : str, default 'Ag/AgCl'
+    reference_electrode : str, optional
         Reference electrode used.
     ph : float, optional
         Electrolyte pH.
@@ -273,11 +275,6 @@ def parse_biologic_mpt(
                     ru_ohm = float(m.group(1))
                     break
 
-    if reference_electrode == "Ag/AgCl" or not reference_electrode:
-        for k, v in metadata.items():
-            if "reference" in k.lower():
-                reference_electrode = str(v).strip()
-                break
 
     if catalyst_loading_mg_cm2 is None:
         for k, v in metadata.items():
@@ -293,6 +290,8 @@ def parse_biologic_mpt(
             f"BioLogic file {p.name} lacks recognizable potential and current columns. "
             f"Found columns: {list(raw_df.columns)}. Try passing custom_mapping."
         )
+
+    reference_electrode, temperature_k = resolve_experimental_conditions(metadata, reference_electrode, temperature_k)
 
     return StandardizedElectrochemicalData(
         filepath=p.resolve(),
@@ -312,6 +311,7 @@ def parse_biologic_mpt(
         phase_angle_deg=std_df["phase_angle_deg"].values if "phase_angle_deg" in std_df.columns else None,
         scan_rate_V_s=scan_rate,
         potential_reference_raw=reference_electrode,
+        temperature_K=temperature_k,
         ph=ph,
         electrode_area_cm2=electrode_area_cm2,
         catalyst_loading_mg_cm2=catalyst_loading_mg_cm2,
@@ -326,10 +326,11 @@ def parse_biologic_mpr(
     technique: Optional[str] = None,
     custom_mapping: Optional[Dict[str, str]] = None,
     electrode_area_cm2: Optional[float] = None,
-    reference_electrode: str = "Ag/AgCl",
+    reference_electrode: Optional[str] = None,
     ph: Optional[float] = None,
     catalyst_loading_mg_cm2: Optional[float] = None,
     ru_ohm: Optional[float] = None,
+    temperature_k: Optional[float] = None,
 ) -> StandardizedElectrochemicalData:
     """
     Parse BioLogic binary .mpr file using galvani if available.
@@ -375,6 +376,9 @@ def parse_biologic_mpr(
         else:
             inferred_technique = "LSV"
 
+    metadata = {}
+    reference_electrode, temperature_k = resolve_experimental_conditions(metadata, reference_electrode, temperature_k)
+
     return StandardizedElectrochemicalData(
         filepath=p.resolve(),
         file_hash=file_hash,
@@ -392,10 +396,12 @@ def parse_biologic_mpr(
         impedance_mag_ohm=std_df["impedance_mag_ohm"].values if "impedance_mag_ohm" in std_df.columns else None,
         phase_angle_deg=std_df["phase_angle_deg"].values if "phase_angle_deg" in std_df.columns else None,
         potential_reference_raw=reference_electrode,
+        temperature_K=temperature_k,
         ph=ph,
         electrode_area_cm2=electrode_area_cm2,
         catalyst_loading_mg_cm2=catalyst_loading_mg_cm2,
         ru_ohm=ru_ohm,
+        raw_metadata=metadata,
         dataframe=std_df,
     )
 

@@ -32,7 +32,7 @@ from impedance.validation import linKK
 
 from parsers.electrochemistry.schema import StandardizedElectrochemicalData
 from scripts.config import get_figure_dimensions
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -428,7 +428,7 @@ def plot_nyquist(
         ax.set_title(title, fontsize=10, pad=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
 
     if save_path:
         out_p = Path(save_path)
@@ -537,7 +537,7 @@ def plot_bode(
     if title:
         fig.suptitle(title, fontsize=10, y=0.98)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
 
     if save_path:
         out_p = Path(save_path)
@@ -626,7 +626,7 @@ def plot_eis_comprehensive(
     if title:
         fig.suptitle(title, fontsize=10, y=1.02)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
 
     if save_path:
         out_p = Path(save_path)

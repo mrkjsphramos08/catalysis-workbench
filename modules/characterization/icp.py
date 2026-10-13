@@ -22,7 +22,7 @@ from modules.characterization.elemental_analysis import (
     convert_concentration_units,
     linear_calibration_fit,
 )
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -183,7 +183,7 @@ def plot_icp_calibration(
     ax_bot.set_xlabel(rf"Concentration $[\mathrm{{{unit}}}]$")
     ax_bot.set_ylabel(r"$\Delta I$")
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, (ax_top, ax_bot)
 
 
@@ -236,5 +236,5 @@ def plot_icp_leaching_comparison(
     ax.set_ylim(0, max(y_vals) * 1.25 if len(y_vals) > 0 and max(y_vals) > 0 else 10.0)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax

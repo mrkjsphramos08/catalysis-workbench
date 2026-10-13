@@ -154,6 +154,8 @@ def record_characterization_provenance(
     output_dirs: Sequence[Union[str, Path]],
     technique: str,
     metadata: Optional[Dict[str, Any]] = None,
+    *,
+    overwrite: bool = False,
 ) -> Path:
     """Record provenance metadata JSON alongside saved characterization figures."""
     from datetime import datetime, timezone
@@ -170,7 +172,7 @@ def record_characterization_provenance(
                 "size_bytes": p.stat().st_size,
             })
         else:
-            file_records.append({"path": str(f), "filename": p.name, "status": "not_found"})
+            raise FileNotFoundError(f"Provenance input not found: {p}")
 
     payload: Dict[str, Any] = {
         "figure_name": figure_name,
@@ -181,14 +183,5 @@ def record_characterization_provenance(
         "analysis_metadata": metadata or {},
     }
 
-    primary_meta_path = None
-    for d in output_dirs:
-        p_dir = Path(d)
-        p_dir.mkdir(parents=True, exist_ok=True)
-        meta_file = p_dir / f"{figure_name}_metadata.json"
-        with open(meta_file, "w", encoding="utf-8") as fp:
-            json.dump(payload, fp, indent=2)
-        if primary_meta_path is None:
-            primary_meta_path = meta_file
-
-    return primary_meta_path or Path(f"{figure_name}_metadata.json")
+    from scripts.utils import write_provenance_json
+    return write_provenance_json(payload, figure_name, output_dirs, overwrite=overwrite)

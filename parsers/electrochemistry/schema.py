@@ -66,7 +66,7 @@ class StandardizedElectrochemicalData:
 
     # Experimental physical parameters
     scan_rate_V_s: Optional[float] = None  # Scan rate in V/s
-    temperature_K: Optional[float] = 298.15  # Cell temperature in K
+    temperature_K: Optional[float] = None  # Cell temperature in K
     potential_reference_raw: str = "unknown"  # 'Ag/AgCl', 'SCE', 'Hg/HgO', 'RHE', etc.
     current_sign_convention: str = "IUPAC"  # IUPAC (+ anodic, - cathodic)
     electrolyte: Optional[str] = None  # e.g. '0.1 M KOH', '0.5 M H2SO4'
@@ -224,14 +224,12 @@ class StandardizedElectrochemicalData:
 
         ref = reference if reference is not None else self.potential_reference_raw
         sol_ph = ph if ph is not None else self.ph
-        t_k = temperature_k if temperature_k is not None else (self.temperature_K or 298.15)
+        t_k = temperature_k if temperature_k is not None else self.temperature_K
 
-        if ref.strip().lower() in ("unknown", "none", ""):
+        if ref is None or ref.strip().lower() in ("unknown", "none", ""):
             raise ValueError(
                 "Reference electrode type is unknown. Please provide reference='Ag/AgCl' (or similar) and pH."
             )
-        if sol_ph is None:
-            raise ValueError("Solution pH is required to convert potential to RHE.")
 
         if self.potential_V is None:
             raise MissingChannelError("Dataset contains no measured potential channel.")
@@ -283,7 +281,8 @@ class StandardizedElectrochemicalData:
 
         # IUPAC convention: anodic current is positive -> potential drops across solution resistance
         # E_actual = E_measured - I * Ru
-        return self.potential_V - (self.current_A * float(r_uncomp) * float(compensation_fraction))
+        from modules.electrochemistry.reference_electrodes import apply_ir_compensation
+        return apply_ir_compensation(self.potential_V, self.current_A, r_uncomp, compensation_fraction)
 
     def get_cycle(self, cycle_idx: int) -> "StandardizedElectrochemicalData":
         """
@@ -349,3 +348,44 @@ def compute_file_sha256(filepath: Union[str, Path]) -> str:
         for chunk in iter(lambda: f.read(65536), b""):
             hasher.update(chunk)
     return hasher.hexdigest()
+
+
+def resolve_experimental_conditions(metadata, reference_electrode=None, temperature_k=None):
+    """Resolve only explicit reference/temperature information, preserving its origin.
+
+    Temperature headers must state K or C; unlabeled numbers remain unknown.
+    Caller values override file headers and are recorded as caller supplied.
+    """
+    import re
+    reference = reference_electrode
+    ref_source = "caller" if reference is not None else None
+    if reference is None:
+        for key, value in metadata.items():
+            if "reference" in key.lower() and "electrode" in key.lower():
+                reference, ref_source = str(value).strip(), str(key)
+                break
+    temp_source = "caller" if temperature_k is not None else None
+    if temperature_k is None:
+        for key, value in metadata.items():
+            if "temperature" not in key.lower():
+                continue
+            match = re.search(r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)", str(value))
+            if match is None:
+                continue
+            unit_text = (str(key) + " " + str(value)).lower()
+            if re.search(r"\b(k|kelvin)\b", unit_text):
+                temperature_k = float(match.group())
+            elif re.search(r"\b(c|celsius)\b", unit_text):
+                temperature_k = float(match.group()) + 273.15
+            else:
+                continue
+            temp_source = str(key)
+            break
+    if temperature_k is not None and (not np.isfinite(temperature_k) or temperature_k <= 0):
+        raise ValueError("Temperature must be finite and positive in kelvin.")
+    reference = reference or "unknown"
+    metadata["resolved_conditions"] = {
+        "reference_electrode": reference, "reference_source": ref_source,
+        "temperature_k": temperature_k, "temperature_source": temp_source,
+    }
+    return reference, temperature_k

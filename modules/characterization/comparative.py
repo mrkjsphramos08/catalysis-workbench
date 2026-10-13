@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -161,5 +161,5 @@ def plot_cross_technique_correlation(
     ax.legend(loc="lower right", frameon=False, fontsize=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax

@@ -122,82 +122,93 @@ def create_publication_figure(
     return fig, axes
 
 
+def finalize_figure_layout(fig: plt.Figure) -> None:
+    """Keep an existing layout engine; use tight layout only for unmanaged figures."""
+    if fig.get_layout_engine() is None:
+        fig.tight_layout()
+
+
 def save_publication_figure(
     fig: plt.Figure,
     filename_base: str,
     output_dirs: Optional[Sequence[Union[str, Path]]] = None,
     formats: Sequence[str] = ("pdf", "svg", "png", "tiff"),
     dpi: int = DEFAULT_DPI,
-    overwrite: bool = True,
+    overwrite: bool = False,
+    *,
+    include_default_dirs: bool = True,
+    bbox_inches: Optional[str] = None,
+    close: bool = False,
 ) -> Dict[str, Path]:
+    """Export figures with collision protection and stable physical dimensions.
+
+    Existing positional arguments are preserved. output_dirs are additional
+    destinations unless include_default_dirs=False. Equivalent paths/formats
+    are deduplicated. Default exports preserve the canvas size; bbox_inches=
+    'tight' explicitly opts into cropping. overwrite=True is required to replace
+    files. All collisions/formats are checked and all formats rendered before
+    writing; replacements use atomic per-file publication (not a batch transaction).
+    Returned paths retain the last-destination convention. close=True closes the
+    supplied figure even on failure; otherwise ownership remains with the caller.
     """
-    Export figure across requested vector and raster publication formats.
+    from io import BytesIO
+    import os
+    import tempfile
 
-    Automatically routes formats to appropriate destination directories:
-    vector (pdf, svg) -> outputs/vector and specified output dirs
-    raster (png, tiff) -> outputs/raster and specified output dirs
-
-    Parameters
-    ----------
-    fig : plt.Figure
-        Figure to export.
-    filename_base : str
-        Base file name without extension.
-    output_dirs : sequence of Paths/strings, optional
-        Additional destination directories (e.g. figures/dft).
-    formats : sequence of str, default ('pdf', 'svg', 'png', 'tiff')
-        Export extensions.
-    dpi : int, default 300
-        Raster dots per inch.
-    overwrite : bool, default True
-        Whether to overwrite existing files. If False and file exists, raises FileExistsError.
-
-    Returns
-    -------
-    Dict[str, Path]
-        Mapping from format name to saved file path.
-    """
-    saved_paths: Dict[str, Path] = {}
-    dest_dirs: List[Path] = []
-
-    if output_dirs:
-        for d in output_dirs:
-            p = Path(d)
-            p.mkdir(parents=True, exist_ok=True)
-            dest_dirs.append(p)
-
-    for fmt in formats:
-        clean_fmt = fmt.lstrip(".").lower()
-        if clean_fmt not in SUPPORTED_FORMATS:
-            raise ValueError(f"Unsupported format '{clean_fmt}'. Supported: {SUPPORTED_FORMATS}")
-
-        # Primary default destination
-        if clean_fmt in ("pdf", "svg"):
-            primary_dir = OUTPUTS_VECTOR_DIR
-        else:
-            primary_dir = OUTPUTS_RASTER_DIR
-
-        primary_dir.mkdir(parents=True, exist_ok=True)
-        all_targets = [primary_dir] + [d for d in dest_dirs if d != primary_dir]
-
-        for target_dir in all_targets:
-            out_file = target_dir / f"{filename_base}.{clean_fmt}"
-            if out_file.exists() and not overwrite:
-                raise FileExistsError(f"Target file {out_file} already exists and overwrite=False.")
-
-            # Save with bbox_inches='tight' and explicit format
-            fig.savefig(
-                out_file,
-                format=clean_fmt,
-                dpi=dpi,
-                bbox_inches="tight",
-                pad_inches=0.03,
-                facecolor="white",
-                edgecolor="none",
-            )
-            saved_paths[clean_fmt] = out_file
-
-    return saved_paths
+    try:
+        if not filename_base or Path(filename_base).name != filename_base or any(c in filename_base for c in '/\\:') or filename_base in ('.', '..'):
+            raise ValueError("filename_base must be a plain filename without directories.")
+        if not np.isfinite(dpi) or dpi <= 0:
+            raise ValueError("dpi must be finite and positive.")
+        if bbox_inches not in (None, "tight"):
+            raise ValueError("bbox_inches must be None or 'tight'.")
+        clean_formats = list(dict.fromkeys(fmt.lstrip(".").lower() for fmt in formats))
+        if not clean_formats or any(fmt not in SUPPORTED_FORMATS for fmt in clean_formats):
+            raise ValueError(f"Choose at least one supported format: {SUPPORTED_FORMATS}")
+        targets = {}
+        for fmt in clean_formats:
+            default = OUTPUTS_VECTOR_DIR if fmt in ("pdf", "svg") else OUTPUTS_RASTER_DIR
+            dirs = ([default] if include_default_dirs else []) + list(output_dirs or [])
+            destinations = list(dict.fromkeys(Path(d).resolve() for d in dirs))
+            if not destinations:
+                raise ValueError("Supply output_dirs when include_default_dirs=False.")
+            targets[fmt] = [d / f"{filename_base}.{fmt}" for d in destinations]
+        for paths in targets.values():
+            for path in paths:
+                if path.exists() and (not overwrite or not path.is_file()):
+                    raise FileExistsError(f"Output exists: {path}; choose a new name or explicitly set overwrite=True.")
+        rendered = {}
+        # rc override is necessary because savefig(None) otherwise inherits
+        # savefig.bbox='tight' from the publication style.
+        with mpl.rc_context({"savefig.bbox": None}):
+            for fmt in clean_formats:
+                buffer = BytesIO()
+                fig.savefig(buffer, format=fmt, dpi=dpi, bbox_inches=bbox_inches,
+                            pad_inches=0.03, facecolor="white", edgecolor="none")
+                rendered[fmt] = buffer.getvalue()
+        saved = {}
+        for fmt, paths in targets.items():
+            for path in paths:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                if not overwrite:
+                    # Exclusive creation also protects against a concurrent writer.
+                    with path.open("xb") as stream:
+                        stream.write(rendered[fmt])
+                else:
+                    temp_name = None
+                    try:
+                        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as stream:
+                            temp_name = stream.name
+                            stream.write(rendered[fmt])
+                        os.replace(temp_name, path)
+                    finally:
+                        if temp_name is not None:
+                            Path(temp_name).unlink(missing_ok=True)
+                saved[fmt] = path
+        return saved
+    finally:
+        if close:
+            plt.close(fig)
 
 
 def validate_columns(
@@ -347,3 +358,23 @@ def calculate_descriptive_statistics(
         }
 
     return pd.DataFrame(stats).T
+
+
+def write_provenance_json(payload: Dict[str, Any], figure_name: str,
+                          output_dirs: Sequence[Union[str, Path]], *, overwrite: bool = False) -> Path:
+    """Write a truthful caller-built record; preflight all destinations before writing."""
+    import json
+    if not figure_name or Path(figure_name).name != figure_name or any(c in figure_name for c in '/\\:'):
+        raise ValueError("figure_name must be a plain filename.")
+    targets = list(dict.fromkeys(Path(d).resolve() / f"{figure_name}_metadata.json" for d in output_dirs))
+    if not targets:
+        raise ValueError("At least one provenance output directory is required.")
+    content = json.dumps(payload, indent=2, allow_nan=False) + "\n"
+    for target in targets:
+        if target.exists() and (not overwrite or not target.is_file()):
+            raise FileExistsError(f"Provenance output exists: {target}")
+    for target in targets:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("w" if overwrite else "x", encoding="utf-8") as stream:
+            stream.write(content)
+    return targets[0]

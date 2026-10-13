@@ -22,7 +22,7 @@ from modules.characterization.common_peaks import (
     smooth_spectrum,
     subtract_baseline,
 )
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 # Standard reference functional group absorption windows (heuristic reference guide)
@@ -136,7 +136,7 @@ def plot_ftir_spectrum(
     ax.set_xlim(x_max, x_min)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -192,5 +192,5 @@ def plot_ftir_stacked(
     ax.legend(loc="upper right", frameon=False, fontsize=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax

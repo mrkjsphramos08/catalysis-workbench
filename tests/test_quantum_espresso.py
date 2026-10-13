@@ -246,10 +246,12 @@ def test_parse_bands_gnu():
 # 5. neb.x Reaction Pathway Tests
 # =========================================================================
 
-def test_parse_neb_output():
+def test_parse_neb_output(tmp_path):
     """Verify NEB output parsing, barriers, and splined path."""
     dat_file = FIXTURE_DIR / "neb.dat"
-    res = parse_neb_output(dat_file)
+    log = tmp_path / "synthetic.out"
+    log.write_text("Program NEB synthetic fixture\n" + (FIXTURE_DIR / "neb.path").read_text() + "\nJOB DONE.\n")
+    res = parse_neb_output(dat_file, log_filepath=log)
 
     assert len(res.image_indices) == 5
     assert pytest.approx(res.image_energies_ev[0]) == 0.0  # Relative to initial

@@ -392,36 +392,36 @@ def generate_electrochemistry_figures(
     # 1. Metrohm OER LSV Polarization Curve
     metrohm_lsv_path = metrohm_dir / "metrohm_oer_lsv.txt"
     if metrohm_lsv_path.exists():
-        data_oer_m = load_electrochemistry_data(metrohm_lsv_path)
+        data_oer_m = load_electrochemistry_data(metrohm_lsv_path, temperature_k=298.15)
         fig, ax = create_publication_figure(columns="single", aspect_ratio="golden")
         plot_lsv(data_oer_m, reaction="OER", target_currents=[10.0, 50.0], ax=ax, title="Metrohm Autolab: Alkaline OER (NiFe-LDH)")
         name = "fig1_metrohm_oer_lsv"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_lsv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "metrohm", "technique": "LSV", "reaction": "OER"})
+        record_figure_provenance(name, [metrohm_lsv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "instrument": "metrohm", "technique": "LSV", "reaction": "OER"})
         plt.close(fig)
         generated.append(name)
 
     # 2. BioLogic HER LSV Polarization Curve
     bio_her_path = biologic_dir / "biologic_her_lsv.mpt"
     if bio_her_path.exists():
-        data_her_b = load_electrochemistry_data(bio_her_path)
+        data_her_b = load_electrochemistry_data(bio_her_path, temperature_k=298.15, reference_electrode="Ag/AgCl_sat")
         fig, ax = create_publication_figure(columns="single", aspect_ratio="golden")
         plot_lsv(data_her_b, reaction="HER", target_currents=[10.0], ax=ax, title="BioLogic EC-Lab: Acidic HER (Pt/C in 0.5 M H2SO4)")
         name = "fig2_biologic_her_lsv"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [bio_her_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "biologic", "technique": "LSV", "reaction": "HER"})
+        record_figure_provenance(name, [bio_her_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "synthetic_reference_assumption": "Ag/AgCl_sat", "instrument": "biologic", "technique": "LSV", "reaction": "HER"})
         plt.close(fig)
         generated.append(name)
 
     # 3. Metrohm Multi-Cycle Cyclic Voltammetry
     metrohm_cv_path = metrohm_dir / "metrohm_cv_multicycle.csv"
     if metrohm_cv_path.exists():
-        data_cv_m = load_electrochemistry_data(metrohm_cv_path)
+        data_cv_m = load_electrochemistry_data(metrohm_cv_path, temperature_k=298.15)
         fig, ax = create_publication_figure(columns="single", aspect_ratio="golden")
         plot_cv(data_cv_m, ax=ax, mark_peaks=True, title="Metrohm Autolab: Cyclic Voltammetry (3 Cycles)")
         name = "fig3_metrohm_cv_multicycle"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_cv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "metrohm", "technique": "CV"})
+        record_figure_provenance(name, [metrohm_cv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "instrument": "metrohm", "technique": "CV"})
         plt.close(fig)
         generated.append(name)
 
@@ -430,7 +430,7 @@ def generate_electrochemistry_figures(
         rates = [0.020, 0.040, 0.060, 0.080, 0.100]
         scan_datasets = []
         for r in rates:
-            d_copy = load_electrochemistry_data(metrohm_cv_path)
+            d_copy = load_electrochemistry_data(metrohm_cv_path, temperature_k=298.15)
             d_copy.scan_rate_V_s = r
             d_copy.current_A = d_copy.current_A * (r / 0.050)
             scan_datasets.append(d_copy)
@@ -443,76 +443,76 @@ def generate_electrochemistry_figures(
         )
         name = "fig4_electrochem_ecsa_analysis"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_cv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"technique": "ECSA", "cdl_uF_cm2": res_ecsa["cdl_mF_cm2"] * 1000.0})
+        record_figure_provenance(name, [metrohm_cv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "technique": "ECSA", "cdl_uF_cm2": res_ecsa["cdl_mF_cm2"] * 1000.0})
         plt.close(fig)
         generated.append(name)
 
     # 5. Metrohm EIS Nyquist Plot with Equivalent Circuit Model
     metrohm_eis_path = metrohm_dir / "metrohm_fra_eis.txt"
     if metrohm_eis_path.exists():
-        data_eis_m = load_electrochemistry_data(metrohm_eis_path)
+        data_eis_m = load_electrochemistry_data(metrohm_eis_path, temperature_k=298.15)
         fit_m = fit_equivalent_circuit(data_eis_m.frequency_Hz, data_eis_m.impedance_real_ohm, data_eis_m.impedance_imag_ohm, circuit_string="R0-p(R1,CPE1)")
         fig, ax = plot_nyquist(data_eis_m, fit_results=fit_m, show_frequencies=True, title="Metrohm Autolab: Nyquist Plot (-Z'' vs Z')")
         name = "fig5_metrohm_eis_nyquist"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "metrohm", "technique": "EIS", "rs_ohm": fit_m["rs_ohm"], "rct_ohm": fit_m["rct_ohm"]})
+        record_figure_provenance(name, [metrohm_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "instrument": "metrohm", "technique": "EIS", "rs_ohm": fit_m["rs_ohm"], "rct_ohm": fit_m["rct_ohm"]})
         plt.close(fig)
         generated.append(name)
 
     # 6. BioLogic EIS Bode Plot (Magnitude & Phase)
     bio_eis_path = biologic_dir / "biologic_peis.mpt"
     if bio_eis_path.exists():
-        data_eis_b = load_electrochemistry_data(bio_eis_path)
+        data_eis_b = load_electrochemistry_data(bio_eis_path, temperature_k=298.15)
         fit_b = fit_equivalent_circuit(data_eis_b.frequency_Hz, data_eis_b.impedance_real_ohm, data_eis_b.impedance_imag_ohm, circuit_string="R0-p(R1,CPE1)")
         fig, axes = plot_bode(data_eis_b, fit_results=fit_b, title="BioLogic EC-Lab: Bode Magnitude & Phase")
         name = "fig6_biologic_eis_bode"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [bio_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "biologic", "technique": "EIS"})
+        record_figure_provenance(name, [bio_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "instrument": "biologic", "technique": "EIS"})
         plt.close(fig)
         generated.append(name)
 
     # 7. Comprehensive 3-Panel EIS Analysis (Nyquist + Bode Mag + Bode Phase)
     if metrohm_eis_path.exists():
-        data_eis_m = load_electrochemistry_data(metrohm_eis_path)
+        data_eis_m = load_electrochemistry_data(metrohm_eis_path, temperature_k=298.15)
         fit_m = fit_equivalent_circuit(data_eis_m.frequency_Hz, data_eis_m.impedance_real_ohm, data_eis_m.impedance_imag_ohm, circuit_string="R0-p(R1,CPE1)")
         fig = plot_eis_comprehensive(data_eis_m, fit_result=fit_m, title="Comprehensive EIS: Modified Randles Equivalent Circuit Fit")
         name = "fig7_eis_randles_fit_comprehensive"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"technique": "EIS", "circuit": "R0-p(R1,CPE1)"})
+        record_figure_provenance(name, [metrohm_eis_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "technique": "EIS", "circuit": "R0-p(R1,CPE1)"})
         plt.close(fig)
         generated.append(name)
 
     # 8. Quasi-Steady-State Tafel Kinetics
     if metrohm_lsv_path.exists():
-        data_oer_m = load_electrochemistry_data(metrohm_lsv_path)
+        data_oer_m = load_electrochemistry_data(metrohm_lsv_path, temperature_k=298.15)
         fig, ax = create_publication_figure(columns="single", aspect_ratio="golden")
         plot_tafel(data_oer_m, reaction="OER", fit_range=(1.0, 10.0), range_type="current", ax=ax, title="Quasi-Steady-State OER Tafel Kinetics")
         name = "fig8_electrochem_tafel_kinetics"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_lsv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"technique": "Tafel", "reaction": "OER"})
+        record_figure_provenance(name, [metrohm_lsv_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "technique": "Tafel", "reaction": "OER"})
         plt.close(fig)
         generated.append(name)
 
     # 9. Metrohm Chronoamperometry Durability
     metrohm_ca_path = metrohm_dir / "metrohm_stability_ca.txt"
     if metrohm_ca_path.exists():
-        data_ca_m = load_electrochemistry_data(metrohm_ca_path)
+        data_ca_m = load_electrochemistry_data(metrohm_ca_path, temperature_k=298.15)
         fig, ax = plot_chronoamperometry(data_ca_m, show_retention=True, potential_label="E = 1.60 V vs RHE", title="Metrohm Autolab: Chronoamperometry (1 h)")
         name = "fig9_metrohm_stability_ca"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_ca_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"instrument": "metrohm", "technique": "CA"})
+        record_figure_provenance(name, [metrohm_ca_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "instrument": "metrohm", "technique": "CA"})
         plt.close(fig)
         generated.append(name)
 
     # 10. Cross-Instrument Benchmarking (Metrohm Autolab vs BioLogic EC-Lab)
     bio_oer_path = biologic_dir / "biologic_oer_lsv.mpt"
     if metrohm_lsv_path.exists() and bio_oer_path.exists():
-        data_m = load_electrochemistry_data(metrohm_lsv_path)
-        data_b = load_electrochemistry_data(bio_oer_path)
+        data_m = load_electrochemistry_data(metrohm_lsv_path, temperature_k=298.15)
+        data_b = load_electrochemistry_data(bio_oer_path, temperature_k=298.15)
         fig, axes = plot_cross_instrument_benchmark(data_m, data_b, reaction="OER", target_j=10.0, title="Cross-Instrument Benchmarking: Metrohm Autolab vs BioLogic EC-Lab")
         name = "fig10_cross_instrument_benchmark"
         save_publication_figure(fig, name, output_dirs=[FIGURES_ELECTROCHEM_DIR], formats=formats, dpi=dpi)
-        record_figure_provenance(name, [metrohm_lsv_path, bio_oer_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"figure_type": "cross_instrument_benchmarking"})
+        record_figure_provenance(name, [metrohm_lsv_path, bio_oer_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"synthetic_temperature_k": 298.15, "figure_type": "cross_instrument_benchmarking"})
         plt.close(fig)
         generated.append(name)
 
@@ -586,7 +586,7 @@ def generate_characterization_figures(
     # 4. FTIR Absorbance Spectrum
     ftir_func = char_base / "ftir" / "catalyst_functionalized_ftir.csv"
     if ftir_func.exists():
-        d_ftir = parse_ftir_file(ftir_func)
+        d_ftir = parse_ftir_file(transmittance_unit="percent", filepath=ftir_func)
         d_abs = convert_transmittance_to_absorbance(d_ftir)
         fig, ax = plot_ftir_spectrum(d_abs, annotate_peaks=True, show_regions=True, title="Functionalized Catalyst Surface FTIR: Surface Ligand Identification")
         name = "fig_char4_ftir_absorbance_spectrum"
@@ -598,8 +598,8 @@ def generate_characterization_figures(
     # 5. FTIR Stacked Offset Comparison
     ftir_spent = char_base / "ftir" / "catalyst_spent_ftir.csv"
     if ftir_func.exists() and ftir_spent.exists():
-        d1_abs = convert_transmittance_to_absorbance(parse_ftir_file(ftir_func))
-        d2_abs = convert_transmittance_to_absorbance(parse_ftir_file(ftir_spent))
+        d1_abs = convert_transmittance_to_absorbance(parse_ftir_file(transmittance_unit="percent", filepath=ftir_func))
+        d2_abs = convert_transmittance_to_absorbance(parse_ftir_file(transmittance_unit="percent", filepath=ftir_spent))
         fig, ax = plot_ftir_stacked([d1_abs, d2_abs], labels=["Pristine Functionalized", "Spent Post-Electrolysis"], vertical_offset_fraction=0.4, title="FTIR Surface Degradation: Pristine vs Spent Post-OER")
         name = "fig_char5_ftir_stacked_comparison"
         save_publication_figure(fig, name, output_dirs=[FIGURES_FTIR_DIR, FIGURES_CHAR_DIR], formats=formats, dpi=dpi)
@@ -1000,7 +1000,7 @@ def handle_electrochemistry_cli(args: argparse.Namespace) -> None:
     if not input_path.is_file():
         raise FileNotFoundError(f"Data file not found: {input_path}")
 
-    data = load_electrochemistry_data(input_path, instrument=args.instrument)
+    data = load_electrochemistry_data(input_path, instrument=args.instrument, reference_electrode=args.reference_electrode, ph=args.ph, temperature_k=args.temperature_k)
     out_name = args.output or f"{input_path.stem}_{args.type}_plot"
     out_dirs = [FIGURES_ELECTROCHEM_DIR]
 
@@ -1023,13 +1023,13 @@ def handle_electrochemistry_cli(args: argparse.Namespace) -> None:
     elif args.type == "benchmark":
         if not args.second_input:
             raise ValueError("--second-input PATH is required for benchmark comparison.")
-        data2 = load_electrochemistry_data(args.second_input)
+        data2 = load_electrochemistry_data(args.second_input, reference_electrode=args.reference_electrode, ph=args.ph, temperature_k=args.temperature_k)
         fig, axes = plot_cross_instrument_benchmark(data, data2, reaction=args.reaction)
     else:
         raise ValueError(f"Unsupported electrochemistry type: {args.type}")
 
     save_publication_figure(fig, out_name, output_dirs=out_dirs, formats=args.formats, dpi=args.dpi)
-    record_figure_provenance(out_name, [input_path], [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"type": args.type, "instrument": data.instrument})
+    record_figure_provenance(out_name, [input_path] + ([Path(args.second_input)] if args.second_input else []), [FIGURES_ELECTROCHEM_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], {"type": args.type, "instrument": data.instrument, "conditions": data.raw_metadata.get("resolved_conditions", {}), "ph": data.ph, "potential_reference_raw": data.potential_reference_raw})
     plt.close(fig)
     print(f"Successfully generated electrochemistry figure: {out_name}")
 
@@ -1053,14 +1053,13 @@ def handle_characterization_cli(args: argparse.Namespace) -> None:
             fig, ax = plot_xrd_pattern(data)
     elif args.type == "ftir":
         if args.second_input:
-            d1 = convert_transmittance_to_absorbance(parse_ftir_file(input_path))
-            d2 = convert_transmittance_to_absorbance(parse_ftir_file(args.second_input))
+            d1 = convert_transmittance_to_absorbance(parse_ftir_file(input_path, transmittance_unit=args.transmittance_unit, signal_type=args.signal_type))
+            d2 = convert_transmittance_to_absorbance(parse_ftir_file(args.second_input, transmittance_unit=args.transmittance_unit, signal_type=args.signal_type))
             fig, ax = plot_ftir_stacked([d1, d2], labels=[input_path.stem, Path(args.second_input).stem])
         else:
-            data = parse_ftir_file(input_path)
+            data = parse_ftir_file(input_path, transmittance_unit=args.transmittance_unit, signal_type=args.signal_type)
             data_abs = convert_transmittance_to_absorbance(data)
-            bands = analyze_ftir_bands(data_abs)
-            fig, ax = plot_ftir_spectrum(data_abs, detected_bands=bands)
+            fig, ax = plot_ftir_spectrum(data_abs, annotate_peaks=True)
     elif args.type == "raman":
         if args.second_input:
             d1 = process_raman_spectrum(parse_raman_file(input_path), despike=True, subtract_bg=True)
@@ -1071,13 +1070,15 @@ def handle_characterization_cli(args: argparse.Namespace) -> None:
             proc = process_raman_spectrum(data, despike=True, subtract_bg=True)
             fig, ax = plot_raman_spectrum(proc)
     elif args.type in ("sem", "tem"):
-        px_nm = args.pixel_size or 1.0
-        data = parse_microscopy_image(input_path, pixel_size_nm=px_nm)
+        px_nm = args.pixel_size
+        data = parse_microscopy_image(input_path, pixel_size_nm=px_nm, technique=args.type.upper())
+        if data.pixel_size_nm is None:
+            raise ValueError("Microscopy calibration is required; supply confirmed --pixel-size in nm/px.")
         seg = segment_particles(data)
         fig, axes = plot_segmentation_overlay(data, seg)
     elif args.type == "hrtem":
-        px_nm = args.pixel_size or 0.02
-        data = parse_microscopy_image(input_path, pixel_size_nm=px_nm)
+        px_nm = args.pixel_size
+        data = parse_microscopy_image(input_path, pixel_size_nm=px_nm, technique="HRTEM")
         fringes = analyze_hrtem_lattice_fringes(data)
         fig, axes = plot_hrtem_fft_panel(data, fringes)
     elif args.type == "icp":
@@ -1089,11 +1090,13 @@ def handle_characterization_cli(args: argparse.Namespace) -> None:
             cal = fit_icp_calibration(stds["concentration"].values, stds["intensity"].values)
             fig, (ax_top, ax_bot) = plot_icp_calibration(cal, element=elem)
         else:
-            pct_l = [calculate_catalyst_leaching(float(r["concentration"]), 50.0, 2.0, 0.20)["percentage_metal_leached"] for _, r in data.dataframe.iterrows()]
-            fig, ax = plot_icp_leaching_comparison(data.dataframe["sample_id"].tolist(), pct_l)
+            raise ValueError("ICP leaching requires confirmed solution volume, catalyst mass, and metal fraction. Use calculate_catalyst_leaching with explicit experimental conditions.")
     elif args.type == "aas":
         data = parse_aas_file(input_path)
         df = data.dataframe
+        if not any(column in df and np.isfinite(df[column]).any()
+                   for column in ("absorbance", "integrated_absorbance")):
+            raise ValueError("AAS calibration requires measured absorbance signals. Concentration-only loading/leaching requires confirmed sample conditions through the existing Python analysis functions.")
         out_dirs = [FIGURES_AAS_DIR, FIGURES_CHAR_DIR]
         method = getattr(args, "calibration_method", "external") or "external"
 
@@ -1107,14 +1110,9 @@ def handle_characterization_cli(args: argparse.Namespace) -> None:
             unit = df["unit"].iloc[0] if "unit" in df.columns else "mg/L"
             fig, ax = plot_standard_addition(sa_res, element=elem, unit=unit)
         elif any(c.lower() in ("mass_mg", "digest_vol_ml") for c in df.columns):
-            sample_ids = df["Sample_ID"].unique() if "Sample_ID" in df.columns else df["sample_id"].unique()
-            actual_loadings = [calculate_aas_catalyst_loading(float(r.get("Measured_Conc_mg_L", r.get("concentration", 1.0))), float(r.get("Digest_Vol_mL", 50.0)), float(r.get("Mass_mg", 2.5)), float(r.get("Dilution_Factor", 1.0)))["metal_loading_wt_pct"] for _, r in df.iterrows()]
-            fig, ax = plot_aas_catalyst_loading(sample_names=sample_ids, actual_loading_wt_pct=actual_loadings, element=args.elements[0] if args.elements else "Metal")
+            raise ValueError("AAS loading requires confirmed digestion volume, catalyst mass, and dilution. Use calculate_aas_catalyst_loading with explicit experimental conditions.")
         elif "time_hours" in [c.lower() for c in df.columns]:
-            time_col = next(c for c in df.columns if "time" in c.lower())
-            conc_col = next(c for c in df.columns if "conc" in c.lower())
-            leach_pcts = [calculate_aas_leaching(float(r[conc_col]), 50.0, 2.0, 0.20)["percentage_metal_leached"] for _, r in df.iterrows()]
-            fig, ax = plot_aas_leaching(time_or_cycles=[f"{t}h" for t in df[time_col]], leached_percentages=leach_pcts, element=args.elements[0] if args.elements else "Metal")
+            raise ValueError("AAS leaching requires confirmed solution volume, catalyst mass, and metal fraction. Use calculate_aas_leaching with explicit experimental conditions.")
         else:
             sig_col = "integrated_absorbance" if "integrated_absorbance" in df.columns and not df["integrated_absorbance"].isna().all() else "absorbance"
             df_stds = df[df["sample_type"].str.lower().str.contains("standard|cal")]
@@ -1143,7 +1141,12 @@ def handle_characterization_cli(args: argparse.Namespace) -> None:
         raise ValueError(f"Unsupported characterization type: {args.type}")
 
     save_publication_figure(fig, out_name, output_dirs=out_dirs, formats=args.formats, dpi=args.dpi)
-    record_characterization_provenance(out_name, [input_path], [FIGURES_CHAR_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], args.type.upper())
+    sources = [input_path] + ([Path(args.second_input)] if args.second_input else [])
+    metadata = {"transmittance_unit": args.transmittance_unit, "signal_type": args.signal_type,
+                "pixel_size_nm": args.pixel_size, "calibration_method": args.calibration_method}
+    if args.type == "ftir":
+        metadata["processed_datasets"] = [d.to_provenance_dict() for d in ([d1, d2] if args.second_input else [data_abs])]
+    record_characterization_provenance(out_name, sources, [FIGURES_CHAR_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR], args.type.upper(), metadata)
     plt.close(fig)
     print(f"Successfully generated characterization figure: {out_name}")
 
@@ -1291,20 +1294,23 @@ def handle_qe_neb_cli(args: argparse.Namespace) -> None:
     if not input_path.is_file():
         raise FileNotFoundError(f"NEB file not found: {input_path}")
 
-    neb_data = parse_neb_output(input_path)
+    neb_data = parse_neb_output(input_path, log_filepath=args.neb_log)
 
     fig, ax = create_publication_figure(columns=args.columns or "single", aspect_ratio="golden")
-    plot_qe_neb_profile(neb_data, ax=ax, title="NEB Reaction Free Energy Profile")
+    plot_qe_neb_profile(neb_data, ax=ax, title="NEB Electronic Energy Profile")
 
     out_name = args.output or f"{input_path.stem}_neb_plot"
     out_dirs = [FIGURES_CATALYSIS_DIR]
     save_publication_figure(fig, out_name, output_dirs=out_dirs, formats=args.formats, dpi=args.dpi)
     record_figure_provenance(
         out_name,
-        [input_path],
+        neb_data.raw_metadata["source_files"],
         [FIGURES_CATALYSIS_DIR, OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR],
         {
             "type": "neb.x",
+            "is_converged": neb_data.is_converged,
+            "coordinate_unit": "arbitrary", "energy_unit": "eV",
+            "barrier_source": neb_data.raw_metadata["barrier_source"],
             "forward_barrier_ev": neb_data.forward_barrier_ev,
             "reverse_barrier_ev": neb_data.reverse_barrier_ev,
         },
@@ -1317,7 +1323,45 @@ def handle_qe_neb_cli(args: argparse.Namespace) -> None:
 # Main Entry Point
 # =========================================================================
 
+from contextlib import contextmanager
+from functools import partial
+
+
+@contextmanager
+def _cli_export_options(args):
+    """Temporarily configure only this CLI's outputs, never its source datasets."""
+    namespace = globals()
+    names = [name for name in namespace if (name.startswith("FIGURES_") or name.startswith("OUTPUTS_")) and name.endswith("_DIR")]
+    names += ["save_publication_figure", "record_figure_provenance", "record_characterization_provenance"]
+    original = {name: namespace[name] for name in names}
+    import scripts.utils as utils
+    original_defaults = (utils.OUTPUTS_VECTOR_DIR, utils.OUTPUTS_RASTER_DIR)
+    try:
+        if args.output_root is not None:
+            root = args.output_root.resolve()
+            for name in names:
+                if name.endswith("_DIR"):
+                    namespace[name] = root / original[name].relative_to(PROJECT_ROOT)
+        utils.OUTPUTS_VECTOR_DIR, utils.OUTPUTS_RASTER_DIR = OUTPUTS_VECTOR_DIR, OUTPUTS_RASTER_DIR
+        namespace["save_publication_figure"] = partial(original["save_publication_figure"], overwrite=args.overwrite, close=True)
+        for name in ("record_figure_provenance", "record_characterization_provenance"):
+            namespace[name] = partial(original[name], overwrite=args.overwrite)
+        yield
+    finally:
+        namespace.update(original)
+        utils.OUTPUTS_VECTOR_DIR, utils.OUTPUTS_RASTER_DIR = original_defaults
+
+
 def main() -> None:
+    before = set(plt.get_fignums())
+    try:
+        _main()
+    finally:
+        for number in set(plt.get_fignums()) - before:
+            plt.close(number)
+
+
+def _main() -> None:
     parser = argparse.ArgumentParser(
         description="Scientific Publication Graphing Workspace Runner (Benchmark & Quantum ESPRESSO Mode)"
     )
@@ -1464,85 +1508,94 @@ def main() -> None:
         help="Export formats (default: pdf svg png tiff).",
     )
 
+    parser.add_argument("--output-root", type=Path, help="Root for generated figures/ and outputs/; input data stays in place.")
+    parser.add_argument("--overwrite", action="store_true", help="Explicitly replace generated figures and sidecars.")
+    parser.add_argument("--reference-electrode", help="Confirmed reference including filling solution.")
+    parser.add_argument("--temperature-k", type=float, help="Confirmed or explicitly assumed cell temperature in kelvin.")
+    parser.add_argument("--ph", type=float, help="Confirmed electrolyte pH.")
+    parser.add_argument("--transmittance-unit", choices=["percent", "fraction"], help="Required for unlabeled FTIR transmittance.")
+    parser.add_argument("--signal-type", choices=["transmittance", "absorbance", "reflectance"])
+    parser.add_argument("--neb-log", type=Path, help="Matching NEB stdout .out log, never a .path restart.")
     args = parser.parse_args()
 
-    # Route based on flags
-    if args.type is not None:
-        if args.input is None:
-            parser.error(f"--type {args.type} requires --input PATH/DIRECTORY.")
+    with _cli_export_options(args):
+        # Route based on flags
+        if args.type is not None:
+            if args.input is None:
+                parser.error(f"--type {args.type} requires --input PATH/DIRECTORY.")
 
-        if args.type in ("dos", "pdos", "bands", "neb"):
-            print("=====================================================================")
-            print(f" Quantum ESPRESSO Direct Plotting: Type={args.type}")
-            print(f" Input: {args.input}")
-            print("=====================================================================")
-            if args.type == "dos":
-                handle_qe_dos_cli(args)
-            elif args.type == "pdos":
-                handle_qe_pdos_cli(args)
-            elif args.type == "bands":
-                handle_qe_bands_cli(args)
-            elif args.type == "neb":
-                handle_qe_neb_cli(args)
-        elif args.type in ("cv", "lsv", "eis", "ca", "cp", "tafel", "ecsa", "benchmark"):
-            print("=====================================================================")
-            print(f" Experimental Electrochemistry Plotting: Type={args.type}")
-            print(f" Input: {args.input}")
-            print("=====================================================================")
-            handle_electrochemistry_cli(args)
-        elif args.type in ("xrd", "ftir", "raman", "sem", "tem", "hrtem", "icp", "aas", "bet", "comparative"):
-            print("=====================================================================")
-            print(f" Materials Characterization Plotting: Type={args.type}")
-            print(f" Input: {args.input}")
-            print("=====================================================================")
-            handle_characterization_cli(args)
-        return
+            if args.type in ("dos", "pdos", "bands", "neb"):
+                print("=====================================================================")
+                print(f" Quantum ESPRESSO Direct Plotting: Type={args.type}")
+                print(f" Input: {args.input}")
+                print("=====================================================================")
+                if args.type == "dos":
+                    handle_qe_dos_cli(args)
+                elif args.type == "pdos":
+                    handle_qe_pdos_cli(args)
+                elif args.type == "bands":
+                    handle_qe_bands_cli(args)
+                elif args.type == "neb":
+                    handle_qe_neb_cli(args)
+            elif args.type in ("cv", "lsv", "eis", "ca", "cp", "tafel", "ecsa", "benchmark"):
+                print("=====================================================================")
+                print(f" Experimental Electrochemistry Plotting: Type={args.type}")
+                print(f" Input: {args.input}")
+                print("=====================================================================")
+                handle_electrochemistry_cli(args)
+            elif args.type in ("xrd", "ftir", "raman", "sem", "tem", "hrtem", "icp", "aas", "bet", "comparative"):
+                print("=====================================================================")
+                print(f" Materials Characterization Plotting: Type={args.type}")
+                print(f" Input: {args.input}")
+                print("=====================================================================")
+                handle_characterization_cli(args)
+            return
 
-    # Benchmark Generation Mode
-    selected_category = "all" if args.all else (args.category or "all")
-    all_generated: List[str] = []
+        # Benchmark Generation Mode
+        selected_category = "all" if args.all else (args.category or "all")
+        all_generated: List[str] = []
 
-    print("=====================================================================")
-    print(" Scientific Publication Graphing Workspace - Runner")
-    print(f" Target Category: {selected_category} | DPI: {args.dpi}")
-    print(f" Formats: {args.formats}")
-    print("=====================================================================")
+        print("=====================================================================")
+        print(" Scientific Publication Graphing Workspace - Runner")
+        print(f" Target Category: {selected_category} | DPI: {args.dpi}")
+        print(f" Formats: {args.formats}")
+        print("=====================================================================")
 
-    if selected_category in ("dft", "all"):
-        print("[1/5] Generating DFT electronic structure & adsorption figures...")
-        figs = generate_dft_figures(formats=args.formats, dpi=args.dpi)
-        all_generated.extend(figs)
-        print(f"      Completed: {figs}")
+        if selected_category in ("dft", "all"):
+            print("[1/5] Generating DFT electronic structure & adsorption figures...")
+            figs = generate_dft_figures(formats=args.formats, dpi=args.dpi)
+            all_generated.extend(figs)
+            print(f"      Completed: {figs}")
 
-    if selected_category in ("catalysis", "all"):
-        print("[2/5] Generating catalysis reaction & volcano figures...")
-        figs = generate_catalysis_figures(formats=args.formats, dpi=args.dpi)
-        all_generated.extend(figs)
-        print(f"      Completed: {figs}")
+        if selected_category in ("catalysis", "all"):
+            print("[2/5] Generating catalysis reaction & volcano figures...")
+            figs = generate_catalysis_figures(formats=args.formats, dpi=args.dpi)
+            all_generated.extend(figs)
+            print(f"      Completed: {figs}")
 
-    if selected_category in ("chemical_engineering", "all"):
-        print("[3/5] Generating chemical engineering kinetics & reactor figures...")
-        figs = generate_chemeng_figures(formats=args.formats, dpi=args.dpi)
-        all_generated.extend(figs)
-        print(f"      Completed: {figs}")
+        if selected_category in ("chemical_engineering", "all"):
+            print("[3/5] Generating chemical engineering kinetics & reactor figures...")
+            figs = generate_chemeng_figures(formats=args.formats, dpi=args.dpi)
+            all_generated.extend(figs)
+            print(f"      Completed: {figs}")
 
-    if selected_category in ("electrochemistry", "all"):
-        print("[4/5] Generating experimental electrochemistry figures (Metrohm & BioLogic)...")
-        figs = generate_electrochemistry_figures(formats=args.formats, dpi=args.dpi)
-        all_generated.extend(figs)
-        print(f"      Completed: {figs}")
+        if selected_category in ("electrochemistry", "all"):
+            print("[4/5] Generating experimental electrochemistry figures (Metrohm & BioLogic)...")
+            figs = generate_electrochemistry_figures(formats=args.formats, dpi=args.dpi)
+            all_generated.extend(figs)
+            print(f"      Completed: {figs}")
 
-    if selected_category in ("characterization", "all"):
-        print("[5/5] Generating materials characterization figures (XRD, FTIR, Raman, SEM, HRTEM, ICP, BET)...")
-        figs = generate_characterization_figures(formats=args.formats, dpi=args.dpi)
-        all_generated.extend(figs)
-        print(f"      Completed: {figs}")
+        if selected_category in ("characterization", "all"):
+            print("[5/5] Generating materials characterization figures (XRD, FTIR, Raman, SEM, HRTEM, ICP, BET)...")
+            figs = generate_characterization_figures(formats=args.formats, dpi=args.dpi)
+            all_generated.extend(figs)
+            print(f"      Completed: {figs}")
 
-    print("=====================================================================")
-    print(f" Total generated publication figures: {len(all_generated)}")
-    print(f" Output vector destination: {OUTPUTS_VECTOR_DIR}")
-    print(f" Output raster destination: {OUTPUTS_RASTER_DIR}")
-    print("=====================================================================")
+        print("=====================================================================")
+        print(f" Total generated publication figures: {len(all_generated)}")
+        print(f" Output vector destination: {OUTPUTS_VECTOR_DIR}")
+        print(f" Output raster destination: {OUTPUTS_RASTER_DIR}")
+        print("=====================================================================")
 
 
 if __name__ == "__main__":

@@ -227,7 +227,7 @@ def plot_cdl_analysis(
         color="#D55E00",
         linestyle="-",
         linewidth=1.3,
-        label=f"$C_{{\\mathrm{{dl}}}} = {cdl_val*1000:.1f}\\,\\mu\\mathrm{{F\,cm^{{-2}}}}$\n$R^2 = {r2:.3f}$, $RF = {rf:.2f}$",
+        label=f"$C_{{\\mathrm{{dl}}}} = {cdl_val*1000:.1f}\\,\\mu\\mathrm{{F\\,cm^{{-2}}}}$\n$R^2 = {r2:.3f}$, $RF = {rf:.2f}$",
         zorder=3,
     )
 

@@ -23,6 +23,7 @@ from parsers.electrochemistry.schema import (
     MissingChannelError,
     StandardizedElectrochemicalData,
     compute_file_sha256,
+    resolve_experimental_conditions,
 )
 
 
@@ -99,12 +100,13 @@ def parse_metrohm_export(
     technique: Optional[str] = None,
     custom_mapping: Optional[Dict[str, str]] = None,
     electrode_area_cm2: Optional[float] = None,
-    reference_electrode: str = "Ag/AgCl",
+    reference_electrode: Optional[str] = None,
     ph: Optional[float] = None,
     catalyst_loading_mg_cm2: Optional[float] = None,
     ru_ohm: Optional[float] = None,
     delimiter: Optional[str] = None,
     encoding: str = "utf-8",
+    temperature_k: Optional[float] = None,
 ) -> StandardizedElectrochemicalData:
     """
     Parse Metrohm Autolab NOVA export (ASCII/TXT, CSV, XLSX) into StandardizedElectrochemicalData.
@@ -120,7 +122,7 @@ def parse_metrohm_export(
         User override for signal mapping {raw_header: canonical_role}.
     electrode_area_cm2 : float, optional
         Geometric surface area in cm^2.
-    reference_electrode : str, default 'Ag/AgCl'
+    reference_electrode : str, optional
         Reference electrode used during measurement.
     ph : float, optional
         Electrolyte pH.
@@ -267,11 +269,6 @@ def parse_metrohm_export(
                     ru_ohm = float(m.group(1))
                     break
 
-    if reference_electrode == "Ag/AgCl" or not reference_electrode:
-        for k, v in raw_metadata.items():
-            if "reference" in k.lower():
-                reference_electrode = str(v).strip()
-                break
 
     if catalyst_loading_mg_cm2 is None:
         for k, v in raw_metadata.items():
@@ -332,6 +329,8 @@ def parse_metrohm_export(
             f"Found columns: {list(raw_df.columns)}. Try passing custom_mapping."
         )
 
+    reference_electrode, temperature_k = resolve_experimental_conditions(raw_metadata, reference_electrode, temperature_k)
+
     return StandardizedElectrochemicalData(
         filepath=p.resolve(),
         file_hash=file_hash,
@@ -350,6 +349,7 @@ def parse_metrohm_export(
         phase_angle_deg=std_df["phase_angle_deg"].values if "phase_angle_deg" in std_df.columns else None,
         scan_rate_V_s=scan_rate,
         potential_reference_raw=reference_electrode,
+        temperature_K=temperature_k,
         electrolyte=raw_metadata.get("Electrolyte"),
         ph=ph,
         electrode_area_cm2=electrode_area_cm2,

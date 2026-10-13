@@ -37,6 +37,7 @@ def fit_tafel_slope(
     range_type: str = "potential",
     scan_rate_V_s: Optional[float] = None,
     current_range: Optional[Tuple[float, float]] = None,
+    temperature_k: Optional[float] = None,
 ) -> Dict[str, Any]:
     """
     Perform linear regression on Tafel relation: eta = a + b * log10(|j|).
@@ -86,7 +87,7 @@ def fit_tafel_slope(
     j_arr = np.asarray(current_density, dtype=float)
     rxn = reaction.strip().upper()
 
-    eta = calculate_overpotential(pot, reaction=rxn)
+    eta = calculate_overpotential(pot, reaction=rxn, temperature_k=temperature_k)
     eta_mv = np.abs(eta) * 1000.0  # Overpotential magnitude in mV
     abs_j = np.abs(j_arr)
 
@@ -177,13 +178,11 @@ def plot_tafel(
     pot = data.potential_V.copy()
     if ir_compensate:
         r_val = ru_ohm if ru_ohm is not None else data.ru_ohm
-        if r_val is not None:
-            from modules.electrochemistry.reference_electrodes import apply_ir_compensation
-            pot = apply_ir_compensation(pot, data.current_A, r_val)
+        pot = data.get_ir_corrected_potential(r_val)
 
     ref = reference_electrode or data.potential_reference_raw
     sol_ph = ph if ph is not None else data.ph
-    pot_rhe = convert_potential_to_rhe(pot, ref, sol_ph)
+    pot_rhe = convert_potential_to_rhe(pot, ref, sol_ph, temperature_k=data.temperature_K)
     j_ma = data.get_current_density(unit="mA/cm2")
 
     fit_res = fit_tafel_slope(
@@ -193,6 +192,7 @@ def plot_tafel(
         fit_range=fit_range,
         range_type=range_type,
         scan_rate_V_s=data.scan_rate_V_s,
+        temperature_k=data.temperature_K,
     )
 
     log_j = fit_res["log_j"]
@@ -258,13 +258,11 @@ def plot_tafel_comparison(
         pot = data.potential_V.copy()
         if ir_compensate:
             r_val = ru_ohms[idx] if ru_ohms else data.ru_ohm
-            if r_val is not None:
-                from modules.electrochemistry.reference_electrodes import apply_ir_compensation
-                pot = apply_ir_compensation(pot, data.current_A, r_val)
+            pot = data.get_ir_corrected_potential(r_val)
 
         ref = reference_electrode or data.potential_reference_raw
         sol_ph = ph if ph is not None else data.ph
-        pot_rhe = convert_potential_to_rhe(pot, ref, sol_ph)
+        pot_rhe = convert_potential_to_rhe(pot, ref, sol_ph, temperature_k=data.temperature_K)
         j_ma = data.get_current_density(unit="mA/cm2")
 
         f_range = fit_ranges[idx] if fit_ranges else None
@@ -275,6 +273,7 @@ def plot_tafel_comparison(
             fit_range=f_range,
             range_type=range_type,
             scan_rate_V_s=data.scan_rate_V_s,
+            temperature_k=data.temperature_K,
         )
         all_fits[lbl] = fit_res
 

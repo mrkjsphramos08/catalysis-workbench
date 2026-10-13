@@ -66,6 +66,7 @@ def test_create_and_save_publication_figure():
             fig=fig,
             filename_base="test_fig",
             output_dirs=[tmp_path],
+            include_default_dirs=False,
             formats=("pdf", "svg", "png", "tiff"),
             dpi=150,
             overwrite=True,
@@ -82,6 +83,7 @@ def test_create_and_save_publication_figure():
                 fig=fig,
                 filename_base="test_fig",
                 output_dirs=[tmp_path],
+            include_default_dirs=False,
                 formats=("png",),
                 overwrite=False,
             )

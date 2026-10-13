@@ -1,0 +1,102 @@
+[
+  {
+    "case": "neb",
+    "pixels": [
+      1003,
+      620
+    ],
+    "png_dpi": [
+      299.9994,
+      299.9994
+    ],
+    "tiff_dpi": [
+      300.0,
+      300.0
+    ],
+    "svg_width": "240.944882pt",
+    "svg_height": "148.912126pt",
+    "pdf_media_box": " 0 0 240.9448818898 148.9121264232 ",
+    "pdf_truetype_embedded": true,
+    "svg_text_elements": 20
+  },
+  {
+    "case": "ftir",
+    "pixels": [
+      1003,
+      620
+    ],
+    "png_dpi": [
+      299.9994,
+      299.9994
+    ],
+    "tiff_dpi": [
+      300.0,
+      300.0
+    ],
+    "svg_width": "240.944882pt",
+    "svg_height": "148.912126pt",
+    "pdf_media_box": " 0 0 240.9448818898 148.9121264232 ",
+    "pdf_truetype_embedded": true,
+    "svg_text_elements": 21
+  },
+  {
+    "case": "aas",
+    "pixels": [
+      1003,
+      743
+    ],
+    "png_dpi": [
+      299.9994,
+      299.9994
+    ],
+    "tiff_dpi": [
+      300.0,
+      300.0
+    ],
+    "svg_width": "240.944882pt",
+    "svg_height": "178.47769pt",
+    "pdf_media_box": " 0 0 240.9448818898 178.4776902887 ",
+    "pdf_truetype_embedded": true,
+    "svg_text_elements": 24
+  },
+  {
+    "case": "lsv",
+    "pixels": [
+      1003,
+      620
+    ],
+    "png_dpi": [
+      299.9994,
+      299.9994
+    ],
+    "tiff_dpi": [
+      300.0,
+      300.0
+    ],
+    "svg_width": "240.944882pt",
+    "svg_height": "148.912126pt",
+    "pdf_media_box": " 0 0 240.9448818898 148.9121264232 ",
+    "pdf_truetype_embedded": true,
+    "svg_text_elements": 18
+  },
+  {
+    "case": "sem",
+    "pixels": [
+      1003,
+      1003
+    ],
+    "png_dpi": [
+      299.9994,
+      299.9994
+    ],
+    "tiff_dpi": [
+      300.0,
+      300.0
+    ],
+    "svg_width": "240.944882pt",
+    "svg_height": "240.944882pt",
+    "pdf_media_box": " 0 0 240.9448818898 240.9448818898 ",
+    "pdf_truetype_embedded": true,
+    "svg_text_elements": 2
+  }
+]

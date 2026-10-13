@@ -20,7 +20,7 @@ from modules.characterization.common_peaks import (
     smooth_spectrum,
     subtract_baseline,
 )
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -133,7 +133,7 @@ def plot_raman_spectrum(
     ax.set_ylim(bottom=0)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -185,7 +185,7 @@ def plot_raman_stacked(
 
     ax.legend(loc="upper right", frameon=False, fontsize=8)
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -250,5 +250,5 @@ def plot_raman_deconvolution(
     ax_bot.set_xlabel(r"Raman Shift $[\mathrm{cm}^{-1}]$")
     ax_bot.set_ylabel(r"$\Delta I$")
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, (ax_top, ax_bot)

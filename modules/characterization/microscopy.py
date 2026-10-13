@@ -22,7 +22,7 @@ import skimage.morphology as sk_morph
 import skimage.segmentation as sk_seg
 
 from parsers.characterization.common import CharacterizationData, InvalidUnitsError
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -200,8 +200,8 @@ def segment_particles(
         d_px = 2.0 * np.sqrt(p.area / np.pi)
         diameters_px.append(float(d_px))
 
-        maj = getattr(p, "axis_major_length", getattr(p, "major_axis_length", 1.0))
-        min_ax = getattr(p, "axis_minor_length", getattr(p, "minor_axis_length", 1.0))
+        maj = p.axis_major_length
+        min_ax = p.axis_minor_length
         if min_ax <= 0:
             min_ax = 1.0
         aspect_ratios.append(float(maj / min_ax))
@@ -354,7 +354,7 @@ def plot_microscopy_with_scalebar(
         ax.set_title(title, fontsize=9, pad=6)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -401,7 +401,7 @@ def plot_segmentation_overlay(
         ax.set_title(title, fontsize=9, pad=6)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -445,7 +445,7 @@ def plot_particle_size_distribution(
 
     ax.legend(loc="upper right", frameon=False, fontsize=8)
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -506,5 +506,5 @@ def plot_hrtem_fft_panel(
     if title:
         fig.suptitle(title, fontsize=9, y=0.98)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, (ax_img, ax_fft, ax_prof)

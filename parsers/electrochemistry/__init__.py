@@ -54,16 +54,15 @@ def load_electrochemistry_data(
     elif inst == "metrohm":
         return parse_metrohm_export(p, **kwargs)
     else:
-        # Heuristic detection from contents
-        try:
-            with open(p, "r", encoding="utf-8", errors="replace") as f:
-                head = f.read(2048)
-            if "ec-lab" in head.lower() or "nb header lines" in head.lower():
-                return load_biologic(p, **kwargs)
-            else:
-                return parse_metrohm_export(p, **kwargs)
-        except Exception:
-            return parse_metrohm_export(p, **kwargs)
+        if inst is not None:
+            raise UnsupportedInstrumentError(f"Unsupported instrument: {instrument}")
+        if ext == ".mps":
+            raise ElectrochemistryParseError(".mps contains settings, not measurements; use parse_biologic_mps.")
+        with p.open("r", encoding="utf-8", errors="replace") as stream:
+            head = stream.read(2048)
+        if "ec-lab" in head.lower() or "nb header lines" in head.lower():
+            return load_biologic(p, **kwargs)
+        return parse_metrohm_export(p, **kwargs)
 
 
 __all__ = [

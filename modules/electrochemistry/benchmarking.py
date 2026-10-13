@@ -18,7 +18,7 @@ from modules.electrochemistry.lsv import extract_overpotential_at_current
 from modules.electrochemistry.tafel import calculate_tafel_slope
 from parsers.electrochemistry.schema import StandardizedElectrochemicalData
 from scripts.config import get_figure_dimensions
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -71,8 +71,8 @@ def compare_instrument_lsv(
     j_b = data_biologic.get_current_density(unit="mA/cm^2")
 
     # Extract eta_10
-    eta10_m = extract_overpotential_at_current(pot_m, j_m, target_j=target_j, reaction=reaction)
-    eta10_b = extract_overpotential_at_current(pot_b, j_b, target_j=target_j, reaction=reaction)
+    eta10_m = extract_overpotential_at_current(pot_m, j_m, target_j=target_j, reaction=reaction, temperature_k=data_metrohm.temperature_K)
+    eta10_b = extract_overpotential_at_current(pot_b, j_b, target_j=target_j, reaction=reaction, temperature_k=data_biologic.temperature_K)
 
     delta_eta10 = (eta10_b - eta10_m) if (eta10_m is not None and eta10_b is not None) else None
 
@@ -222,7 +222,7 @@ def plot_cross_instrument_benchmark(
     if title:
         fig.suptitle(title, fontsize=10, y=0.98)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
 
     if save_path:
         out_p = Path(save_path)

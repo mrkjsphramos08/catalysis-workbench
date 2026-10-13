@@ -16,7 +16,7 @@ import numpy as np
 from modules.electrochemistry.reference_electrodes import convert_potential_to_rhe
 from parsers.electrochemistry.schema import StandardizedElectrochemicalData
 from scripts.config import get_figure_dimensions
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -166,7 +166,7 @@ def plot_chronopotentiometry(
 
         t_plot = (d.time_s - d.time_s[0]) / t_div
 
-        if convert_to_rhe and (d.ph is not None or ph is not None):
+        if convert_to_rhe:
             sol_ph = ph if ph is not None else d.ph
             pot_plot = d.get_potential_vs_rhe(ph=sol_ph)
             y_label = r"$E~[\mathrm{V~vs.~RHE}]$"
@@ -215,7 +215,7 @@ def plot_chronopotentiometry(
         ax.set_title(title, fontsize=10, pad=8)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
 
     if save_path:
         out_p = Path(save_path)

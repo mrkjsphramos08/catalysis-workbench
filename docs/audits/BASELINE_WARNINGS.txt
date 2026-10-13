@@ -1,0 +1,133 @@
+============================== warnings summary ===============================
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:744: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:744: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:812: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:869: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:948: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:993: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:1032: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:1069: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_aas.py::test_aas_figures_plotting
+  modules\characterization\aas.py:1122: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_bet.py::test_bet_and_bjh_plotting
+  modules\characterization\bet.py:254: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_bet.py::test_bet_and_bjh_plotting
+  modules\characterization\bet.py:311: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_bet.py::test_bet_and_bjh_plotting
+  modules\characterization\bet.py:367: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_comparative.py::test_plot_cross_technique_correlation
+  modules\characterization\comparative.py:164: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_ftir.py::test_ftir_plotting_descending_axis
+  modules\characterization\ftir.py:139: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_ftir.py::test_ftir_plotting_descending_axis
+  modules\characterization\ftir.py:195: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_icp.py::test_icp_plotting
+  modules\characterization\icp.py:186: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    fig.tight_layout()
+
+tests/characterization/test_icp.py::test_icp_plotting
+  modules\characterization\icp.py:186: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_icp.py::test_icp_plotting
+  modules\characterization\icp.py:239: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_microscopy.py::test_sem_particle_segmentation
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:203: FutureWarning: `RegionProperties.major_axis_length` is deprecated starting in version 0.26 and will be removed in version 2.0. Use `RegionProperties.axis_major_length` instead.
+    maj = getattr(p, "axis_major_length", getattr(p, "major_axis_length", 1.0))
+
+tests/characterization/test_microscopy.py::test_sem_particle_segmentation
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:204: FutureWarning: `RegionProperties.minor_axis_length` is deprecated starting in version 0.26 and will be removed in version 2.0. Use `RegionProperties.axis_minor_length` instead.
+    min_ax = getattr(p, "axis_minor_length", getattr(p, "minor_axis_length", 1.0))
+
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:357: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:404: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:448: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_microscopy.py::test_microscopy_plotting
+  modules\characterization\microscopy.py:509: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_raman.py::test_raman_plotting
+  modules\characterization\raman.py:136: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_raman.py::test_raman_plotting
+  scripts\utils.py:112: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+    fig, axes = plt.subplots(
+
+tests/characterization/test_raman.py::test_raman_plotting
+  modules\characterization\raman.py:188: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_raman.py::test_raman_plotting
+  modules\characterization\raman.py:253: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    fig.tight_layout()
+
+tests/characterization/test_raman.py::test_raman_plotting
+  modules\characterization\raman.py:253: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_xrd.py::test_xrd_peak_deconvolution_and_plotting
+  modules\characterization\xrd.py:407: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    fig.tight_layout()
+
+tests/characterization/test_xrd.py::test_xrd_peak_deconvolution_and_plotting
+  modules\characterization\xrd.py:407: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+tests/characterization/test_xrd.py::test_xrd_peak_deconvolution_and_plotting
+  modules\characterization\xrd.py:286: UserWarning: The figure layout has changed to tight
+    fig.tight_layout()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+132 passed, 34 warnings in 8.08s

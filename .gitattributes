@@ -1,0 +1,5 @@
+# Preserve authentic upstream reference bytes and their recorded SHA-256 hashes.
+tests/fixtures/qe/upstream_neb/H2+H.* -text
+tests/fixtures/qe/upstream_neb/QE-LICENSE.txt -text
+# Native stdout contains trailing spaces; retain them as source evidence.
+tests/fixtures/qe/upstream_neb/H2+H.out whitespace=-blank-at-eol

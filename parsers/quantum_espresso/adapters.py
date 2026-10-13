@@ -196,21 +196,23 @@ def plot_qe_neb_profile(
     if neb_data.forward_barrier_ev is not None:
         ax.annotate(
             rf"$E_{{\mathrm{{a,fwd}}}} = {neb_data.forward_barrier_ev:.2f}\,$eV"
-            + (rf", $E_{{\mathrm{{a,rev}}}} = {neb_data.reverse_barrier_ev:.2f}\,$eV" if neb_data.reverse_barrier_ev is not None else ""),
-            xy=(0.04, 0.90),
+            + ("\n" + rf"$E_{{\mathrm{{a,rev}}}} = {neb_data.reverse_barrier_ev:.2f}\,$eV" if neb_data.reverse_barrier_ev is not None else ""),
+            xy=(0.04, 0.96),
             xycoords="axes fraction",
+            va="top",
             fontsize=7.0,
             bbox=dict(boxstyle="round,pad=0.3", facecolor="#F8F8F8", edgecolor="#CCCCCC", alpha=0.9),
         )
 
-    ax.set_xlabel(r"Reaction Coordinate ($\mathrm{\AA}$)")
+    ax.set_xlabel("Reaction Coordinate (arb. units)")
     ax.set_ylabel(r"Relative Energy $\Delta E$ (eV)")
     ax.axhline(0, color="#888888", linestyle="--", linewidth=0.6)
 
     if title:
         ax.set_title(title)
 
-    ax.legend(loc="lower right", framealpha=0.85, fontsize=7.0)
+    ax.margins(y=0.30)
+    ax.legend(loc="upper right", framealpha=0.85, fontsize=7.0)
     return ax
 
 
@@ -219,6 +221,8 @@ def record_figure_provenance(
     input_files: Sequence[Union[str, Path]],
     output_dirs: Sequence[Union[str, Path]],
     metadata: Optional[Dict[str, Any]] = None,
+    *,
+    overwrite: bool = False,
 ) -> Path:
     """
     Write a companion provenance JSON metadata file alongside generated publication figures.
@@ -253,29 +257,15 @@ def record_figure_provenance(
                 "size_bytes": p.stat().st_size,
             })
         else:
-            file_records.append({"path": str(f), "filename": p.name, "status": "not_found"})
+            raise FileNotFoundError(f"Provenance input not found: {p}")
 
     payload: Dict[str, Any] = {
         "figure_name": figure_name,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "input_files": file_records,
-        "parser_version": "1.2.0-qe",
-        "units": {
-            "energy_original": "Ry / eV (Quantum ESPRESSO)",
-            "energy_plotted": "eV",
-            "fermi_aligned": True,
-        },
+        "parser_version": "2.0.0-provenance",
         "analysis_metadata": metadata or {},
     }
 
-    primary_meta_path = None
-    for d in output_dirs:
-        p_dir = Path(d)
-        p_dir.mkdir(parents=True, exist_ok=True)
-        meta_file = p_dir / f"{figure_name}_metadata.json"
-        with open(meta_file, "w", encoding="utf-8") as fp:
-            json.dump(payload, fp, indent=2)
-        if primary_meta_path is None:
-            primary_meta_path = meta_file
-
-    return primary_meta_path or Path(f"{figure_name}_metadata.json")
+    from scripts.utils import write_provenance_json
+    return write_provenance_json(payload, figure_name, output_dirs, overwrite=overwrite)

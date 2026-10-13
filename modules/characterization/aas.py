@@ -29,7 +29,7 @@ from modules.characterization.elemental_analysis import (
     linear_calibration_fit,
 )
 from parsers.characterization.common import CharacterizationData
-from scripts.utils import apply_publication_style, create_publication_figure
+from scripts.utils import finalize_figure_layout, apply_publication_style, create_publication_figure
 from styles.palettes import get_color, get_palette
 
 
@@ -723,9 +723,10 @@ def plot_aas_calibration(
 
     ax_top.text(
         0.05,
-        0.75,
+        0.95,
         annot,
         transform=ax_top.transAxes,
+        va="top",
         fontsize=7.5,
         bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="#cccccc", alpha=0.9),
     )
@@ -741,7 +742,7 @@ def plot_aas_calibration(
     ax_bot.set_xlabel(rf"Concentration $[\mathrm{{{unit}}}]$")
     ax_bot.set_ylabel(r"$\Delta \mathrm{Signal}$")
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, (ax_top, ax_bot)
 
 
@@ -785,14 +786,14 @@ def plot_standard_addition(
     ax.plot([-c_app, -c_app], [0, sa_result["intercept"]], color="#CC79A7", linestyle="--", linewidth=0.8)
 
     annot = (
-        f"$C_{{\mathrm{{sample}}}} = {c_app:.3f} \\pm {ci95:.3f}\\ \\mathrm{{{unit}}}$\n"
+        f"$C_{{\\mathrm{{sample}}}} = {c_app:.3f} \\pm {ci95:.3f}\\ \\mathrm{{{unit}}}$\n"
         f"$R^2 = {sa_result['r_squared']:.4f}$\n"
         f"Slope: {sa_result['slope']:.3f}"
     )
     if sa_result.get("dilution_factor", 1.0) > 1.0:
         c_orig = sa_result["original_concentration"]
         ci_orig = sa_result["ci95_original"]
-        annot += f"\n$C_{{\mathrm{{original}}}} = {c_orig:.3f} \\pm {ci_orig:.3f}\\ \\mathrm{{{unit}}}$"
+        annot += f"\n$C_{{\\mathrm{{original}}}} = {c_orig:.3f} \\pm {ci_orig:.3f}\\ \\mathrm{{{unit}}}$"
 
     ax.text(
         0.05,
@@ -809,7 +810,7 @@ def plot_standard_addition(
     ax.set_title(ttl, fontsize=9, pad=6)
     ax.legend(loc="lower right", frameon=False, fontsize=7.5)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -866,7 +867,7 @@ def plot_aas_concentration_comparison(
     ax.set_ylim(0, max_v * 1.25)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -945,7 +946,7 @@ def plot_aas_catalyst_loading(
     ax.set_ylim(0, max_val * 1.3)
 
     if created_fig:
-        fig.tight_layout()
+        finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -990,7 +991,7 @@ def plot_aas_leaching(
     ttl = title or f"Electrochemical Stability: {element} Dissolution Kinetics"
     ax1.set_title(ttl, fontsize=9, pad=6)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, ax1
 
 
@@ -1029,7 +1030,7 @@ def plot_aas_stability_before_after(
     max_v = max(max(before_loading_wt_pct), max(after_loading_wt_pct)) if len(before_loading_wt_pct) > 0 else 10.0
     ax.set_ylim(0, max_v * 1.3)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -1066,7 +1067,7 @@ def plot_aas_replicate_distribution(
     ttl = title or "AAS Instrumental Replicate Precision"
     ax.set_title(ttl, fontsize=9, pad=6)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, ax
 
 
@@ -1119,5 +1120,5 @@ def plot_aas_qc_chart(
     ax.set_title(ttl, fontsize=9, pad=6)
     ax.legend(loc="lower right", frameon=False, fontsize=7)
 
-    fig.tight_layout()
+    finalize_figure_layout(fig)
     return fig, ax

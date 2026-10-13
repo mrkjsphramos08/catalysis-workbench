@@ -1,0 +1,26 @@
+{
+  "classification": "authentic upstream QE reference output",
+  "commit": "61569eb480231b649c47f631df9c5c83537df461",
+  "records": [
+    {
+      "file": "H2+H.dat",
+      "url": "https://raw.githubusercontent.com/QEF/q-e/61569eb480231b649c47f631df9c5c83537df461/NEB/examples/example01/reference/H2+H.dat",
+      "sha256": "09d772eb84166b85b54c07b9f4156e48fd325b427e4d3654809f821a8f1f36fe"
+    },
+    {
+      "file": "H2+H.int",
+      "url": "https://raw.githubusercontent.com/QEF/q-e/61569eb480231b649c47f631df9c5c83537df461/NEB/examples/example01/reference/H2+H.int",
+      "sha256": "cbe6eb06b8ba579eaabb26ac7033078d076c7c1dd1bc11d178f56656f29ba3b6"
+    },
+    {
+      "file": "H2+H.out",
+      "url": "https://raw.githubusercontent.com/QEF/q-e/61569eb480231b649c47f631df9c5c83537df461/NEB/examples/example01/reference/H2+H.out",
+      "sha256": "371b574b7ebc02bc5b2824fca941ec32bc1ad8afc607862a156e7d7d00ca42c9"
+    },
+    {
+      "file": "H2+H.path",
+      "url": "https://raw.githubusercontent.com/QEF/q-e/61569eb480231b649c47f631df9c5c83537df461/NEB/examples/example01/reference/H2+H.path",
+      "sha256": "5dee1109b4684c6a8c1f775848142b625dc7be106fbc512755f3c305b80a66dd"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 """
 Electrochemical Reference Electrodes, Thermodynamic Potentials, and iR Compensation.
 
-Provides certified reference potentials vs SHE/RHE for standard laboratory electrodes:
+Provides tabulated reference potentials vs SHE/RHE for standard laboratory electrodes:
 - Ag/AgCl (Sat. KCl, 3.0 M, 3.5 M, 1.0 M)
 - SCE (Saturated Calomel Electrode)
 - Hg/HgO (1.0 M KOH, 0.1 M KOH)
@@ -143,11 +143,17 @@ def get_reference_potential_vs_she(
 get_standard_electrode_potential = get_reference_potential_vs_she
 
 
+def _require_temperature(temperature_k: Optional[float]) -> float:
+    if temperature_k is None or not np.isfinite(temperature_k) or temperature_k <= 0:
+        raise ValueError("Temperature must be explicitly supplied, finite, and positive in kelvin.")
+    return float(temperature_k)
+
+
 def convert_potential_to_rhe(
     potential_measured: Union[float, np.ndarray, Sequence[float]],
     reference_electrode: str,
-    ph: float,
-    temperature_k: float = 298.15,
+    ph: Optional[float],
+    temperature_k: Optional[float] = None,
 ) -> Union[float, np.ndarray]:
     """
     Convert measured potential to Reversible Hydrogen Electrode (RHE) scale.
@@ -164,7 +170,7 @@ def convert_potential_to_rhe(
         Reference electrode type ('Ag/AgCl', 'SCE', 'Hg/HgO', 'RHE', etc.).
     ph : float
         Solution electrolyte pH.
-    temperature_k : float, default 298.15
+    temperature_k : float, required for temperature-dependent corrections
         Cell temperature in Kelvin.
 
     Returns
@@ -179,7 +185,12 @@ def convert_potential_to_rhe(
         # Already on RHE scale
         return arr if arr.ndim > 0 else float(arr)
 
+    if _normalize_ref_key(reference_electrode) in ("ag/agcl", "hg/hgo"):
+        raise ValueError("Specify the reference electrode filling solution, e.g. Ag/AgCl_3m or Ag/AgCl_sat.")
+    temperature_k = _require_temperature(temperature_k)
     e_ref_she = get_reference_potential_vs_she(reference_electrode, temperature_k)
+    if ph is None or not np.isfinite(ph):
+        raise ValueError("Solution pH must be explicitly supplied and finite.")
     nernst_slope = KB_EV_PER_K * float(temperature_k) * np.log(10.0)
     e_rhe = arr + e_ref_she + (nernst_slope * float(ph))
 
@@ -189,13 +200,16 @@ def convert_potential_to_rhe(
 def convert_potential_to_she(
     potential_measured: Union[float, np.ndarray, Sequence[float]],
     reference_electrode: str,
-    temperature_k: float = 298.15,
+    temperature_k: Optional[float] = None,
 ) -> Union[float, np.ndarray]:
     """
     Convert measured potential to Standard Hydrogen Electrode (SHE) scale:
     E_SHE = E_measured + E_ref^0(vs SHE).
     """
     arr = np.asarray(potential_measured, dtype=float)
+    if _normalize_ref_key(reference_electrode) in ("ag/agcl", "hg/hgo"):
+        raise ValueError("Specify the reference electrode filling solution, e.g. Ag/AgCl_3m or Ag/AgCl_sat.")
+    temperature_k = _require_temperature(temperature_k)
     e_ref_she = get_reference_potential_vs_she(reference_electrode, temperature_k)
     e_she = arr + e_ref_she
     return e_she if arr.ndim > 0 else float(e_she)
@@ -204,7 +218,7 @@ def convert_potential_to_she(
 def calculate_overpotential(
     potential_vs_rhe: Union[float, np.ndarray, Sequence[float]],
     reaction: str = "OER",
-    temperature_k: float = 298.15,
+    temperature_k: Optional[float] = None,
 ) -> Union[float, np.ndarray]:
     """
     Calculate theoretical overpotential (eta) for HER or OER.
@@ -221,7 +235,7 @@ def calculate_overpotential(
         Working electrode potential vs RHE (V).
     reaction : str, default 'OER'
         Target catalytic reaction: 'HER' or 'OER'.
-    temperature_k : float, default 298.15
+    temperature_k : float, required for temperature-dependent corrections
         Cell temperature in Kelvin.
 
     Returns
@@ -236,6 +250,7 @@ def calculate_overpotential(
         # Equilibrium potential is 0.000 V vs RHE
         eta = arr - 0.000
     elif rxn == "OER":
+        temperature_k = _require_temperature(temperature_k)
         # Equilibrium potential is 1.229 V vs RHE at 298.15 K
         # Temperature dependence of water oxidation E0(T) ~ 1.229 - 0.000846 * (T - 298.15)
         e0_oer = 1.229 - 8.46e-4 * (float(temperature_k) - 298.15)
@@ -272,7 +287,7 @@ def apply_ir_compensation(
     float or np.ndarray
         iR-compensated potential in Volts.
     """
-    if ru_ohm < 0:
+    if not np.isfinite(ru_ohm) or ru_ohm < 0:
         raise ValueError(f"Uncompensated resistance Ru must be non-negative, got {ru_ohm} Ohm.")
     if not (0.0 <= compensation_fraction <= 1.0):
         raise ValueError(

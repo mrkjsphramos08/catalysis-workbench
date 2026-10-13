@@ -26,6 +26,7 @@ def extract_overpotential_at_current(
     current_density: np.ndarray,
     target_j: float = 10.0,
     reaction: str = "OER",
+    temperature_k: Optional[float] = None,
 ) -> Optional[float]:
     """
     Interpolate the overpotential at a specific target current density (e.g. 10 mA/cm^2).
@@ -52,12 +53,18 @@ def extract_overpotential_at_current(
     j_arr = np.asarray(current_density, dtype=float)
     rxn = reaction.strip().upper()
 
+    equilibrium = -float(calculate_overpotential(0.0, reaction=rxn, temperature_k=temperature_k))
     target_val = abs(target_j) if rxn == "OER" else -abs(target_j)
 
     # Sort monotonically by potential
     sort_idx = np.argsort(pot)
     pot_s = pot[sort_idx]
     j_s = j_arr[sort_idx]
+
+    current_order = np.argsort(j_s)
+    j_s, pot_s = j_s[current_order], pot_s[current_order]
+    if target_val < j_s.min() or target_val > j_s.max():
+        return None
 
     # Check if target is bracketed
     if rxn == "OER":
@@ -66,14 +73,14 @@ def extract_overpotential_at_current(
         # Interpolate potential where current density equals target_val
         e_target = float(np.interp(target_val, j_s, pot_s))
         # Overpotential for OER: eta = E - 1.229 V
-        eta_v = e_target - 1.229
+        eta_v = e_target - equilibrium
         return float(eta_v * 1000.0)  # in mV
     else:  # HER
         if j_s.min() > target_val:
             return None
         # For HER, j is negative, cathodic current increases negatively
         # Invert to monotonic for interpolation
-        e_target = float(np.interp(-target_val, -j_s, pot_s))
+        e_target = float(np.interp(target_val, j_s, pot_s))
         # Overpotential for HER: eta = |E - 0.000|
         eta_v = abs(e_target - 0.000)
         return float(eta_v * 1000.0)  # in mV
@@ -144,12 +151,12 @@ def plot_lsv(
         r_val = ru_ohm if ru_ohm is not None else data.ru_ohm
         if r_val is None:
             raise ValueError("ru_ohm must be specified to perform iR compensation.")
-        pot = apply_ir_compensation(pot, cur_A, r_val, compensation_fraction)
+        pot = data.get_ir_corrected_potential(r_val, compensation_fraction)
 
     if potential_scale.upper() == "RHE":
         ref = reference_electrode or data.potential_reference_raw
         sol_ph = ph if ph is not None else data.ph
-        pot_plotted = convert_potential_to_rhe(pot, ref, sol_ph)
+        pot_plotted = convert_potential_to_rhe(pot, ref, sol_ph, temperature_k=data.temperature_K)
         x_label = r"Potential $E$ (V vs RHE)"
     else:
         pot_plotted = pot
@@ -164,14 +171,16 @@ def plot_lsv(
     # Benchmark overpotentials
     benchmarks: Dict[str, Optional[float]] = {}
     for tj in target_currents:
-        eta_val = extract_overpotential_at_current(pot_plotted, j_norm, target_j=tj, reaction=reaction)
+        eta_val = extract_overpotential_at_current(pot_plotted, data.get_current_density(unit="mA/cm2"), target_j=tj, reaction=reaction, temperature_k=data.temperature_K) if potential_scale.upper() == "RHE" else None
         benchmarks[f"eta_{int(tj)}_mV"] = eta_val
 
         # Mark eta_10 on plot if reached
         if eta_val is not None:
-            y_mark = tj if reaction.upper() == "OER" else -tj
+            nonzero = np.flatnonzero(data.current_A)
+            display_factor = float(j_norm[nonzero[0]] / data.get_current_density(unit="mA/cm2")[nonzero[0]])
+            y_mark = (tj if reaction.upper() == "OER" else -tj) * display_factor
             # Calculate corresponding potential
-            e_mark = (1.229 + eta_val / 1000.0) if reaction.upper() == "OER" else (-eta_val / 1000.0)
+            e_mark = (-calculate_overpotential(0.0, reaction="OER", temperature_k=data.temperature_K) + eta_val / 1000.0) if reaction.upper() == "OER" else (-eta_val / 1000.0)
             ax.scatter([e_mark], [y_mark], color="#D55E00", s=36, marker="o", edgecolor="#222222", zorder=5)
             ax.annotate(
                 f"$\\eta_{{{int(tj)}}} = {eta_val:.1f}$ mV",
@@ -185,10 +194,10 @@ def plot_lsv(
             )
 
     ax.axhline(0.0, color="#666666", linestyle="--", linewidth=0.7, zorder=1)
-    if reaction.upper() == "OER":
-        ax.axvline(1.229, color="#999999", linestyle=":", linewidth=0.7, label=r"$E^0_{\mathrm{OER}}$ (1.23 V)")
-    else:
-        ax.axvline(0.000, color="#999999", linestyle=":", linewidth=0.7, label=r"$E^0_{\mathrm{HER}}$ (0.00 V)")
+    if potential_scale.upper() == "RHE":
+        equilibrium = -calculate_overpotential(0.0, reaction=reaction, temperature_k=data.temperature_K)
+        ax.axvline(equilibrium, color="#999999", linestyle=":", linewidth=0.7,
+                   label=f"{reaction.upper()} equilibrium ({equilibrium:.2f} V)")
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -265,29 +274,31 @@ def plot_lsv_comparison(
 
         if ir_compensate:
             r_val = ru_ohms[idx] if ru_ohms else data.ru_ohm
-            if r_val is not None:
-                pot = apply_ir_compensation(pot, cur_A, r_val)
+            pot = data.get_ir_corrected_potential(r_val)
 
         if potential_scale.upper() == "RHE":
             ref = reference_electrode or data.potential_reference_raw
             sol_ph = ph if ph is not None else data.ph
-            pot_plotted = convert_potential_to_rhe(pot, ref, sol_ph)
+            pot_plotted = convert_potential_to_rhe(pot, ref, sol_ph, temperature_k=data.temperature_K)
         else:
             pot_plotted = pot
 
         j_norm = data.get_current_density(unit=current_unit)
         ax.plot(pot_plotted, j_norm, color=colors[idx % len(colors)], linewidth=1.3, label=lbl, zorder=3)
 
-        eta10 = extract_overpotential_at_current(pot_plotted, j_norm, target_j=10.0, reaction=reaction)
+        eta10 = extract_overpotential_at_current(pot_plotted, data.get_current_density(unit="mA/cm2"), target_j=10.0, reaction=reaction, temperature_k=data.temperature_K) if potential_scale.upper() == "RHE" else None
         all_benchmarks[lbl] = {"eta_10_mV": eta10}
 
     ax.axhline(0.0, color="#666666", linestyle="--", linewidth=0.7, zorder=1)
-    if reaction.upper() == "OER":
-        ax.axhline(10.0, color="#CCCCCC", linestyle=":", linewidth=0.6)
-        ax.axvline(1.229, color="#999999", linestyle=":", linewidth=0.7, label=r"$E^0_{\mathrm{OER}}$ (1.23 V)")
-    else:
-        ax.axhline(-10.0, color="#CCCCCC", linestyle=":", linewidth=0.6)
-        ax.axvline(0.000, color="#999999", linestyle=":", linewidth=0.7, label=r"$E^0_{\mathrm{HER}}$ (0.00 V)")
+    if current_unit == "mA/cm2":
+        ax.axhline(10.0 if reaction.upper() == "OER" else -10.0,
+                   color="#CCCCCC", linestyle=":", linewidth=0.6)
+    if potential_scale.upper() == "RHE":
+        equilibria = {-float(calculate_overpotential(0.0, reaction=reaction,
+                       temperature_k=data.temperature_K)) for data in datasets}
+        for equilibrium in sorted(equilibria):
+            ax.axvline(equilibrium, color="#999999", linestyle=":", linewidth=0.7,
+                       label=f"{reaction.upper()} equilibrium ({equilibrium:.2f} V)")
 
     x_lbl = r"Potential $E$ (V vs RHE)" if potential_scale.upper() == "RHE" else "Potential $E$ (V)"
     ax.set_xlabel(x_lbl)
