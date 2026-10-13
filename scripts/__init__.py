@@ -1,3 +1,3 @@
 """
-Scripts package for python_graphing workspace.
+Scripts package for catalysis-workbench workspace.
 """

@@ -1,7 +1,7 @@
 # Workspace Handoff Document: Phase 4 Materials Characterization & AAS Integration
 
 ## 1. Overview & Discussed
-Phase 4 and its follow-up completed the expansion of `python_graphing` into a comprehensive, multi-technique materials characterization, elemental spectrometry, and cross-correlation research platform. The workspace now spans:
+Phase 4 and its follow-up completed the expansion of `catalysis-workbench` into a comprehensive, multi-technique materials characterization, elemental spectrometry, and cross-correlation research platform. The workspace now spans:
 - Quantum ESPRESSO DFT and heterogeneous catalysis reaction engineering.
 - Experimental electrochemistry for Metrohm Autolab (NOVA) and BioLogic (EC-Lab).
 - Eight physical & elemental characterization techniques: XRD, FTIR, SEM, Raman, ICP-OES/MS, Gas Physisorption (BET/BJH), TEM/HRTEM, and Atomic Absorption Spectroscopy (FAAS & GFAAS), plus cross-technique correlation modeling.

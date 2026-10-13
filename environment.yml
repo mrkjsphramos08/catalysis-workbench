@@ -1,4 +1,4 @@
-name: research-graphing
+name: catalysis-workbench
 channels:
   - conda-forge
   - defaults

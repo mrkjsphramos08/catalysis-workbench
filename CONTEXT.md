@@ -1,7 +1,7 @@
-# python_graphing Context & Domain Vocabulary
+# catalysis-workbench Context & Domain Vocabulary
 
 ## Domain Overview
-`python_graphing` is a modular, publication-quality scientific graphing workspace designed for computational chemistry, density functional theory (DFT), heterogeneous catalysis, and chemical engineering. It is a post-processing and visualization toolkit that ingests raw/processed calculation outputs and experimental data, enforces thermodynamic and kinetic invariants, and exports vector/raster figures compliant with high-impact journal standards (e.g., Nature, JACS, ACS Catalysis, Journal of Catalysis, AIChE Journal).
+`catalysis-workbench` is a modular, publication-quality scientific graphing workspace designed for computational chemistry, density functional theory (DFT), heterogeneous catalysis, and chemical engineering. It is a post-processing and visualization toolkit that ingests raw/processed calculation outputs and experimental data, enforces thermodynamic and kinetic invariants, and exports vector/raster figures compliant with high-impact journal standards (e.g., Nature, JACS, ACS Catalysis, Journal of Catalysis, AIChE Journal).
 
 ## Core Modules & Vocabulary
 - **Quantum ESPRESSO Parsers (`parsers/quantum_espresso/`)**:

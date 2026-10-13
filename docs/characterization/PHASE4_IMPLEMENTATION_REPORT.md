@@ -1,6 +1,6 @@
 # Materials Characterization & Atomic Absorption Spectroscopy Implementation Report
 
-**Workspace:** `python_graphing`  
+**Workspace:** `catalysis-workbench`  
 **Domain:** Heterogeneous Catalysis, Materials Characterization, Analytical Chemistry & Computational Materials Science  
 **Module:** Phase 4 — Materials Characterization & AAS Integration  
 **Date:** October 2026  
@@ -11,7 +11,7 @@
 
 ## 1. Executive Summary
 
-Phase 4 and its follow-up integration extend the `python_graphing` research platform from Density Functional Theory (DFT) and experimental electrochemistry into a complete, mathematically verified materials characterization and elemental spectrometry analysis suite. The platform now implements full working support for eight physical characterization techniques prioritized in experimental heterogeneous catalysis, electrocatalysis (HER/OER/ORR), and materials science:
+Phase 4 and its follow-up integration extend the `catalysis-workbench` research platform from Density Functional Theory (DFT) and experimental electrochemistry into a complete, mathematically verified materials characterization and elemental spectrometry analysis suite. The platform now implements full working support for eight physical characterization techniques prioritized in experimental heterogeneous catalysis, electrocatalysis (HER/OER/ORR), and materials science:
 
 1. **X-Ray Diffraction (XRD)**
 2. **Fourier Transform Infrared Spectroscopy (FTIR)**

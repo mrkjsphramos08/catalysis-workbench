@@ -1,6 +1,6 @@
-# python_graphing: Scientific Graphing Workspace for DFT, Catalysis & Chemical Engineering
+# catalysis-workbench: Computational Chemistry, DFT & Catalysis Research Workspace
 
-`python_graphing` is a modular, publication-quality scientific graphing and post-processing workspace engineered for computational chemistry, density functional theory (DFT), heterogeneous catalysis, and chemical engineering.
+`catalysis-workbench` is a modular, publication-quality scientific graphing and post-processing workspace engineered for computational chemistry, density functional theory (DFT), heterogeneous catalysis, and chemical engineering.
 
 Its primary purpose is to process research datasets, analyze computational and experimental results, and generate scientifically rigorous, journal-ready figures adhering to international publishing standards (e.g., Nature Portfolio, ACS, RSC, Elsevier, Wiley, and AIChE).
 
@@ -9,7 +9,7 @@ Its primary purpose is to process research datasets, analyze computational and e
 ## 1. Project Architecture
 
 ```text
-python_graphing/
+catalysis-workbench/
 ├── data/
 │   ├── raw/                             # Pristine raw calculations and experimental datasets (never modified)
 │   ├── processed/                       # Standardized, unit-converted datasets with traceable provenance

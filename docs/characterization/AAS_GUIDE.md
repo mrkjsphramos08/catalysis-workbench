@@ -1,6 +1,6 @@
 # Atomic Absorption Spectroscopy (AAS) Research Guide & Analytical Reference
 
-**Workspace:** `python_graphing`  
+**Workspace:** `catalysis-workbench`  
 **Domain:** Quantitative Analytical Chemistry, Materials Characterization & Catalyst Stability  
 **Standards Compliance:** US EPA Method 7000B (Flame AAS), US EPA Method 7010 (GFAAS), US EPA Method 200.9 (STPF-GFAAS)  
 **Author:** Senior Scientific Python Developer & Analytical Chemistry Specialist  
@@ -21,7 +21,7 @@ where:
 - $b$ is the optical path length of the atomizer
 - $C$ is the free ground-state atomic concentration in the atomization cell.
 
-In `python_graphing`, AAS is integrated alongside Inductively Coupled Plasma (ICP-OES / ICP-MS), X-Ray Diffraction (XRD), Gas Physisorption (BET/BJH), and Electron Microscopy to provide elemental composition, catalyst loading, and electrochemical dissolution kinetics for heterogeneous catalysts and electrocatalysts (HER / OER / ORR).
+In `catalysis-workbench`, AAS is integrated alongside Inductively Coupled Plasma (ICP-OES / ICP-MS), X-Ray Diffraction (XRD), Gas Physisorption (BET/BJH), and Electron Microscopy to provide elemental composition, catalyst loading, and electrochemical dissolution kinetics for heterogeneous catalysts and electrocatalysts (HER / OER / ORR).
 
 ---
 

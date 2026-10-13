@@ -1,6 +1,6 @@
 # Quantum ESPRESSO Test Fixture Manifest & Provenance Registry
 
-This manifest provides strict provenance tracking and classification for all test fixtures in `tests/fixtures/qe/` used across the `python_graphing` test suite and scientific validation audits.
+This manifest provides strict provenance tracking and classification for all test fixtures in `tests/fixtures/qe/` used across the `catalysis-workbench` test suite and scientific validation audits.
 
 ## 1. Classification Taxonomy
 
