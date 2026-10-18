@@ -107,6 +107,7 @@ def parse_xrd_file(
 
         # Extract header metadata comments if present (e.g. #, //, *, [Header])
         skip_rows = 0
+        has_header = True
         for idx, line in enumerate(lines):
             stripped = line.strip()
             if not stripped:
@@ -120,13 +121,16 @@ def parse_xrd_file(
             elif re.search(r"[a-zA-Z]", stripped) and not re.search(r"^[0-9.eE+\-\s,;\t]+$", stripped):
                 # Probably a header row with column labels
                 skip_rows = idx
+                has_header = True
                 break
             elif re.search(r"^[0-9.eE+\-\s,;\t]+$", stripped):
                 # Pure numerical line
                 skip_rows = idx
+                has_header = False
                 break
 
         # Read into dataframe
+        header_arg = 0 if has_header else None
         sep = delimiter if delimiter is not None else r"[\s,;\t]+"
         try:
             df = pd.read_csv(
@@ -135,10 +139,11 @@ def parse_xrd_file(
                 sep=sep,
                 engine="python" if delimiter is None else "c",
                 comment="#",
+                header=header_arg,
             )
         except Exception:
             # Fallback: whitespace delimiter
-            df = pd.read_csv(p, skiprows=skip_rows, delim_whitespace=True)
+            df = pd.read_csv(p, skiprows=skip_rows, delim_whitespace=True, header=header_arg)
 
     # Clean empty columns
     df = df.dropna(how="all", axis=1)
@@ -167,11 +172,13 @@ def parse_xrd_file(
             elif col_err is None and any(k in c_str for k in ["err", "esd", "sigma", "std"]):
                 col_err = c
 
-        # Fallback to positional: column 0 = 2theta, column 1 = intensity
+        # Fallback to positional: column 0 = 2theta, column 1 = intensity, column 2 = error (if present)
         if col_2theta is None and len(cols) >= 2:
             col_2theta = cols[0]
         if col_int is None and len(cols) >= 2:
             col_int = cols[1]
+        if col_err is None and len(cols) >= 3:
+            col_err = cols[2]
 
     if col_2theta is None or col_int is None:
         raise CharacterizationParseError(

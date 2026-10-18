@@ -1,0 +1,27 @@
+{
+  "figure_name": "fig_xrd_cobalt_silica_sample1",
+  "timestamp_utc": "2026-10-18T15:36:18.188988+00:00",
+  "input_files": [
+    {
+      "path": "C:\\Users\\mjram\\catalysis-workbench\\data\\raw\\xrd\\Sample 1 Black powder.ASC",
+      "filename": "Sample 1 Black powder.ASC",
+      "sha256": "7f4a7e4b920bc08128b535ce20e0eb1a8db5d5fd11195b6228cc06c1d9fde5ff",
+      "size_bytes": 76143
+    },
+    {
+      "path": "C:\\Users\\mjram\\catalysis-workbench\\data\\raw\\xrd\\Sample 2 White powder.ASC",
+      "filename": "Sample 2 White powder.ASC",
+      "sha256": "3360d72788b663223bccf073d1cc2eee2b9bfd73efd5fdd6c9c74ea394d463c0",
+      "size_bytes": 76107
+    }
+  ],
+  "technique": "XRD-Automated-Pipeline",
+  "parser_version": "1.0.0-char",
+  "analysis_metadata": {
+    "sample": "Sample 1 Black powder",
+    "has_support": true,
+    "scaling_k": 0.8593,
+    "primary_2theta": 20.5117,
+    "crystallite_size_nm": 121.23
+  }
+}

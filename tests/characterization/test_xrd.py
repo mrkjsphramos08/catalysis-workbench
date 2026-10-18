@@ -3,6 +3,7 @@ Unit and Numerical Validation Tests for X-Ray Diffraction (XRD) Module.
 """
 
 from pathlib import Path
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
@@ -113,3 +114,30 @@ def test_xrd_peak_deconvolution_and_plotting():
 
     fig_pat, ax_pat = plot_xrd_pattern(data, annotate_peaks=True)
     assert fig_pat is not None
+    plt.close("all")
+
+
+def test_parse_xrd_headerless_asc_with_uncertainty(tmp_path):
+    """Verify parsing of 3-column headerless ASC raw XRD data with uncertainties."""
+    asc_content = (
+        "10.0197 2567.0 50.675\n"
+        "10.0627 2592.7 50.928\n"
+        "10.1057 2583.2 50.835\n"
+        "10.1487 2462.9 49.638\n"
+        "10.1917 2571.9 50.724\n"
+        "10.2347 2568.4 50.690\n"
+        "10.2777 2557.7 50.583\n"
+        "10.3207 2579.1 50.795\n"
+        "10.3637 2506.9 50.079\n"
+        "10.4067 2518.9 50.199\n"
+    )
+    test_file = tmp_path / "raw_diffractogram.ASC"
+    test_file.write_text(asc_content, encoding="utf-8")
+
+    data = parse_xrd_file(test_file, wavelength="cu")
+    assert len(data.x) == 10
+    assert data.x[0] == pytest.approx(10.0197)
+    assert data.y[0] == pytest.approx(2567.0)
+    assert data.y_err is not None
+    assert len(data.y_err) == 10
+    assert data.y_err[0] == pytest.approx(50.675)
